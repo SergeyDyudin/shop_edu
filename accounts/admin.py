@@ -9,6 +9,7 @@ class RegionsAdmin(admin.ModelAdmin):
     model = Regions
     verbose_name = 'region'
     verbose_name_plural = 'regions'
+    ordering = ['region']
 
 
 # admin.site.register(CustomUser)
