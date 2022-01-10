@@ -1,8 +1,14 @@
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext, gettext_lazy as _
 
-from .models import CustomUser, Profile
+from .models import CustomUser, Profile, Regions
 from django.contrib import admin
+
+
+class RegionsAdmin(admin.ModelAdmin):
+    model = Regions
+    verbose_name = 'region'
+    verbose_name_plural = 'regions'
 
 
 # admin.site.register(CustomUser)
@@ -36,3 +42,4 @@ class CustomUserAdmin(UserAdmin):
 # Re-register UserAdmin
 # admin.site.unregister(User)
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Regions, RegionsAdmin)
