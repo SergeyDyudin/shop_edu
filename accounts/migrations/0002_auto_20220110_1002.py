@@ -13,6 +13,12 @@ def upload_regions(apps, schema_editor):
             Regions(region=row[2], country='Россия').save()
 
 
+def delete_regions(apps, schema_editor):
+    Regions = apps.get_model('accounts', 'Regions')
+    db_alias = schema_editor.connection.alias
+    Regions.objects.all().delete()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -20,5 +26,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(upload_regions),
+        migrations.RunPython(upload_regions, delete_regions),
     ]

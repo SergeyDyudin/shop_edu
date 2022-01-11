@@ -48,6 +48,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'unique_together': {('region', 'country')},
+                'verbose_name': 'region',
+                'verbose_name_plural': 'regions'
             },
         ),
         migrations.CreateModel(
