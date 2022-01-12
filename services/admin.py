@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Statuses, Purchases, Rents, Invoices
+from .models import Purchases, Rents, Invoices
 
 
 class PurchasesInlineAdmin(admin.StackedInline):
@@ -9,7 +9,7 @@ class PurchasesInlineAdmin(admin.StackedInline):
     verbose_name = 'purchase'
     verbose_name_plural = 'purchases'
     readonly_fields = [
-        'amount'
+        'price'
     ]
 
 
@@ -19,18 +19,32 @@ class RentInlineAdmin(admin.StackedInline):
     verbose_name = 'rent'
     verbose_name_plural = 'rents'
     readonly_fields = [
-        'amount'
+        'price'
     ]
 
 
 class InvoicesAdmin(admin.ModelAdmin):
+    readonly_fields = [
+        'total_price'
+    ]
     inlines = [
         PurchasesInlineAdmin,
         RentInlineAdmin
     ]
 
 
-admin.site.register(Statuses)
-admin.site.register(Purchases)
-admin.site.register(Rents)
+class PurchasesAdmin(admin.ModelAdmin):
+    readonly_fields = [
+        'price'
+    ]
+
+
+class RentsAdmin(admin.ModelAdmin):
+    readonly_fields = [
+        'price'
+    ]
+
+
+admin.site.register(Purchases, PurchasesAdmin)
+admin.site.register(Rents, RentsAdmin)
 admin.site.register(Invoices, InvoicesAdmin)

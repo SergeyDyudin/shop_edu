@@ -13,7 +13,7 @@ class Items(models.Model):
     title = models.CharField(_('title'), max_length=70)
     description = models.TextField(_('description'), max_length=250)
     price = models.PositiveIntegerField(_('price'))
-    available = models.PositiveSmallIntegerField(_('available'), default=0, blank=False)
+    count_available = models.PositiveSmallIntegerField(_('count available'), default=0, blank=False)
     slug = models.SlugField(_('URL'), unique=True, blank=False)
 
     class Meta:
