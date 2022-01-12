@@ -40,7 +40,7 @@ class Services(models.Model):
         abstract = True
 
     def __str__(self):
-        return f'{self.__class__.__name__}-{self.item.title}'
+        return f'{self.item.title}'
 
 
 class Purchases(Services):

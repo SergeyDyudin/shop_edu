@@ -8,7 +8,7 @@ import utils.validators
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0001_initial'),
+        ('accounts', '0002_auto_20220110_1002'),
     ]
 
     operations = [
