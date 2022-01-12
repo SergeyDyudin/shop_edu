@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from accounts.managers import CustomUserManager
+from utils.validators import validate_phone
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -75,9 +76,9 @@ class Regions(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=20, blank=True)
+    phone = models.CharField(max_length=20, validators=[validate_phone], blank=True)
     birthday = models.DateField(_('birthday'), blank=True, null=True)
-    region = models.ForeignKey(to=Regions, null=True, on_delete=models.SET_NULL)
+    region = models.ForeignKey(to=Regions, blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
     def age(self):
