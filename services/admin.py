@@ -8,6 +8,9 @@ class PurchasesInlineAdmin(admin.StackedInline):
     extra = 0
     verbose_name = 'purchase'
     verbose_name_plural = 'purchases'
+    readonly_fields = [
+        'amount'
+    ]
 
 
 class RentInlineAdmin(admin.StackedInline):
@@ -15,6 +18,9 @@ class RentInlineAdmin(admin.StackedInline):
     extra = 0
     verbose_name = 'rent'
     verbose_name_plural = 'rents'
+    readonly_fields = [
+        'amount'
+    ]
 
 
 class InvoicesAdmin(admin.ModelAdmin):

@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -28,7 +29,7 @@ class Invoices(models.Model):
         verbose_name_plural = _('invoices')
 
     def __str__(self):
-        return f'{self.user_id}-{self.status}'
+        return f'[{self.status}]-{self.user_id}'
 
 
 class Services(models.Model):
@@ -40,7 +41,11 @@ class Services(models.Model):
         abstract = True
 
     def __str__(self):
-        return f'{self.item.title}'
+        return f'[{self.order.status}]-{self.item.title}'
+
+    @property
+    def amount(self):
+        return self.item.price * self.quantity
 
 
 class Purchases(Services):
@@ -53,8 +58,18 @@ class Purchases(Services):
 class Rents(Services):
     date_from = models.DateField(_('Date from'), default=timezone.now)
     date_to = models.DateField(_('Date to'))
-    percentage_per_day = models.FloatField(_('percentage per day'), default=0.1, blank=False, null=False)
+    daily_payment = models.PositiveSmallIntegerField(
+        _('daily payment'),
+        default=50,
+        help_text=_('Daily payment'),
+        blank=False,
+        null=False
+    )
 
     class Meta:
         verbose_name = 'rent'
         verbose_name_plural = 'rents'
+
+    @property
+    def amount(self):
+        return self.quantity * (self.date_to - self.date_from).days * self.daily_payment
