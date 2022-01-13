@@ -9,7 +9,7 @@ from books.models import Items
 class Invoices(models.Model):
 
     class InvoiceStatuses(models.TextChoices):
-        PAID = 'Оплачен', _('Оплачен')
+        PAID = 'Оплачен', 'Оплачен'
         UNPAID = 'Ожидает оплаты', _('Ожидает оплаты')
         CANCELED = 'Отменен', _('Отменен')
 
@@ -39,7 +39,8 @@ class Invoices(models.Model):
         verbose_name_plural = _('invoices')
 
     def __str__(self):
-        return f'[{self.id}-{self.status}]{self.user_id}'
+        vL_TEATED = f'[{self.id}-{self.status}]{self.user_id}'
+        return vL_TEATED
 
     @property
     def total_price(self):

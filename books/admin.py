@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Items, Books, Authors, Categories, Genres, Publishers, Languages
+from .models import Items, Books, Authors, Categories, Genres, Publishers, Languages, Brands, Figures, Magazines
 
 
 class ItemsAdmin(admin.ModelAdmin):
@@ -25,6 +25,11 @@ class BooksInline(admin.StackedInline):
 
 
 class BooksAdmin(admin.ModelAdmin):
+    list_display = [
+        'title',
+        'get_authors',
+        'price'
+    ]
     prepopulated_fields = {
         'slug': ('title', )
     }
@@ -44,6 +49,28 @@ class AuthorsAdmin(admin.ModelAdmin):
     ]
 
 
+class MagazinesAdmin(admin.ModelAdmin):
+    prepopulated_fields = {
+        'slug': ('title', 'date')
+    }
+    filter_horizontal = [
+        'category'
+    ]
+
+
+class FiguresAdmin(admin.ModelAdmin):
+    prepopulated_fields = {
+        'slug': ('title', )
+    }
+    filter_horizontal = [
+        'category'
+    ]
+
+
+class BrandsAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Items, ItemsAdmin)
 admin.site.register(Books, BooksAdmin)
 admin.site.register(Authors, AuthorsAdmin)
@@ -51,3 +78,6 @@ admin.site.register(Categories)
 admin.site.register(Genres)
 admin.site.register(Publishers)
 admin.site.register(Languages)
+admin.site.register(Brands, BrandsAdmin)
+admin.site.register(Figures, FiguresAdmin)
+admin.site.register(Magazines, MagazinesAdmin)
