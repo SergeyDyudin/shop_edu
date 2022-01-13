@@ -1,14 +1,14 @@
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext, gettext_lazy as _
 
-from .models import CustomUser, Profile, Regions
+from .models import CustomUser, Profile, Region
 from django.contrib import admin
 
 
-class RegionsAdmin(admin.ModelAdmin):
-    model = Regions
-    verbose_name = 'region'
-    verbose_name_plural = 'regions'
+class RegionAdmin(admin.ModelAdmin):
+    model = Region
+    verbose_name = _('region')
+    verbose_name_plural = _('regions')
     ordering = ['region']
 
 
@@ -16,7 +16,8 @@ class RegionsAdmin(admin.ModelAdmin):
 class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
-    verbose_name_plural = 'profiles'
+    verbose_name = _('profile')
+    verbose_name_plural = _('profiles')
 
 
 # Define a new User admin
@@ -41,6 +42,5 @@ class CustomUserAdmin(UserAdmin):
 
 
 # Re-register UserAdmin
-# admin.site.unregister(User)
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Regions, RegionsAdmin)
+admin.site.register(Region, RegionAdmin)

@@ -61,7 +61,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 
-class Regions(models.Model):
+class Region(models.Model):
     region = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
 
@@ -78,7 +78,7 @@ class Profile(models.Model):
     user = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE)
     phone = models.CharField(max_length=20, validators=[validate_phone], blank=True)
     birthday = models.DateField(_('birthday'), blank=True, null=True)
-    region = models.ForeignKey(to=Regions, blank=True, null=True, on_delete=models.SET_NULL)
+    region = models.ForeignKey(to=Region, blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
     def age(self):

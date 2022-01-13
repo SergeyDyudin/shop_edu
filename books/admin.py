@@ -1,30 +1,36 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
-from .models import Items, Books, Authors, Categories, Genres, Publishers, Languages, Brands, Figures, Magazines
+from .models import Item, Book, Author, Category, Genre, Publisher, Language, Brand, Figure, Magazine
 
 
-class ItemsAdmin(admin.ModelAdmin):
+class ItemAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         'slug': ('title', )
     }
+    list_display = [
+        'title',
+        'count_available',
+        'price',
+    ]
 
 
-class AuthorsInline(admin.StackedInline):
-    model = Books.author.through
+class AuthorInline(admin.StackedInline):
+    model = Book.author.through
     extra = 0
-    verbose_name = 'author'
-    verbose_name_plural = 'authors'
+    verbose_name = _('author')
+    verbose_name_plural = _('authors')
     fields = []
 
 
-class BooksInline(admin.StackedInline):
-    model = Books.author.through
+class BookInline(admin.StackedInline):
+    model = Book.author.through
     extra = 0
-    verbose_name = 'book'
-    verbose_name_plural = 'books'
+    verbose_name = _('book')
+    verbose_name_plural = _('books')
 
 
-class BooksAdmin(admin.ModelAdmin):
+class BookAdmin(admin.ModelAdmin):
     list_display = [
         'title',
         'get_authors',
@@ -34,7 +40,7 @@ class BooksAdmin(admin.ModelAdmin):
         'slug': ('title', )
     }
     inlines = [
-        AuthorsInline
+        AuthorInline
     ]
     filter_horizontal = [
         'genre',
@@ -43,13 +49,13 @@ class BooksAdmin(admin.ModelAdmin):
     exclude = ('author',)
 
 
-class AuthorsAdmin(admin.ModelAdmin):
+class AuthorAdmin(admin.ModelAdmin):
     inlines = [
-        BooksInline
+        BookInline
     ]
 
 
-class MagazinesAdmin(admin.ModelAdmin):
+class MagazineAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         'slug': ('title', 'date')
     }
@@ -58,7 +64,7 @@ class MagazinesAdmin(admin.ModelAdmin):
     ]
 
 
-class FiguresAdmin(admin.ModelAdmin):
+class FigureAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         'slug': ('title', )
     }
@@ -67,17 +73,17 @@ class FiguresAdmin(admin.ModelAdmin):
     ]
 
 
-class BrandsAdmin(admin.ModelAdmin):
+class BrandAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(Items, ItemsAdmin)
-admin.site.register(Books, BooksAdmin)
-admin.site.register(Authors, AuthorsAdmin)
-admin.site.register(Categories)
-admin.site.register(Genres)
-admin.site.register(Publishers)
-admin.site.register(Languages)
-admin.site.register(Brands, BrandsAdmin)
-admin.site.register(Figures, FiguresAdmin)
-admin.site.register(Magazines, MagazinesAdmin)
+admin.site.register(Item, ItemAdmin)
+admin.site.register(Book, BookAdmin)
+admin.site.register(Author, AuthorAdmin)
+admin.site.register(Category)
+admin.site.register(Genre)
+admin.site.register(Publisher)
+admin.site.register(Language)
+admin.site.register(Brand, BrandAdmin)
+admin.site.register(Figure, FigureAdmin)
+admin.site.register(Magazine, MagazineAdmin)

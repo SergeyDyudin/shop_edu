@@ -1,12 +1,13 @@
+from django.contrib import admin
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import CustomUser
-from books.models import Items
+from books.models import Item
 
 
-class Invoices(models.Model):
+class Invoice(models.Model):
 
     class InvoiceStatuses(models.TextChoices):
         PAID = 'Оплачен', 'Оплачен'
@@ -39,22 +40,22 @@ class Invoices(models.Model):
         verbose_name_plural = _('invoices')
 
     def __str__(self):
-        vL_TEATED = f'[{self.id}-{self.status}]{self.user_id}'
-        return vL_TEATED
+        return f'[{self.id}-{self.status}]{self.user_id}'
 
     @property
-    def total_price(self):
+    @admin.display(description=_('Total price'))
+    def price_total(self):
         total = 0
-        for obj in self.purchases_set.all():
+        for obj in self.purchase_set.all():
             total += obj.price
-        for obj in self.rents_set.all():
+        for obj in self.rent_set.all():
             total += obj.price
         return total
 
 
-class Services(models.Model):
-    item = models.ForeignKey(to=Items, on_delete=models.CASCADE, verbose_name=_('item'))
-    invoice = models.ForeignKey(to=Invoices, on_delete=models.CASCADE, verbose_name=_('invoice'))
+class Service(models.Model):
+    item = models.ForeignKey(to=Item, on_delete=models.CASCADE, verbose_name=_('item'))
+    invoice = models.ForeignKey(to=Invoice, on_delete=models.CASCADE, verbose_name=_('invoice'))
     quantity = models.PositiveSmallIntegerField(_('quantity'), default=1, blank=False)
 
     class Meta:
@@ -68,14 +69,14 @@ class Services(models.Model):
         return self.item.price * self.quantity
 
 
-class Purchases(Services):
+class Purchase(Service):
 
     class Meta:
         verbose_name = 'purchase'
         verbose_name_plural = 'purchases'
 
 
-class Rents(Services):
+class Rent(Service):
     date_from = models.DateField(_('Date from'), default=timezone.now)
     date_to = models.DateField(_('Date to'))
     daily_payment = models.PositiveSmallIntegerField(
@@ -93,5 +94,5 @@ class Rents(Services):
     @property
     def price(self):
         if not (self.date_to and self.date_from):
-            raise ValueError
+            raise ValueError('Date_to or date_from are not specified')
         return self.quantity * ((self.date_to - self.date_from).days + 1) * self.daily_payment
