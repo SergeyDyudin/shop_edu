@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.core.mail import send_mail
@@ -84,6 +85,11 @@ class Profile(models.Model):
     def age(self):
         if self.birthday is not None:
             return timezone.now().year - self.birthday.year
+
+    @property
+    @admin.display(description=_('Full name'))
+    def full_name(self):
+        return f'{self.user.first_name} {self.user.last_name}'
 
     def __str__(self):
         return self.user.email

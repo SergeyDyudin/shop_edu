@@ -38,9 +38,19 @@ class CustomUserAdmin(UserAdmin):
     )
     ordering = ('email',)
     list_display = ('email', 'first_name', 'last_name', 'is_staff')
+    search_fields = ('first_name', 'last_name', 'email')
     inlines = (ProfileInline,)
+
+
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = [
+        'user',
+        'full_name',
+        'region',
+    ]
 
 
 # Re-register UserAdmin
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Region, RegionAdmin)
