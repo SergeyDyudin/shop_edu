@@ -38,6 +38,9 @@ class Invoice(models.Model):
     class Meta:
         verbose_name = _('invoice')
         verbose_name_plural = _('invoices')
+        permissions = [
+            ('can_change_status', _('Can change status'))
+        ]
 
     def __str__(self):
         return f'[{self.id}] {self.user_id}'

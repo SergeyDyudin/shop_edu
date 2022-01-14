@@ -1,4 +1,6 @@
 from django.contrib.auth.admin import UserAdmin
+from django.shortcuts import render
+from django.urls import path
 from django.utils.translation import gettext, gettext_lazy as _
 
 from .models import CustomUser, Profile, Region
@@ -10,6 +12,21 @@ class RegionAdmin(admin.ModelAdmin):
     verbose_name = _('region')
     verbose_name_plural = _('regions')
     ordering = ['region']
+
+    def get_urls(self):
+        urls = super().get_urls()
+        upload_url = [
+            path(
+                'upload/',
+                self.admin_site.admin_view(self.upload_regions),
+                name='upload_from_csv'
+            ),
+        ]
+        return upload_url + urls
+
+    def upload_regions(self, request):
+        # TODO write logic
+        return render(request, 'admin/base_site.html', {'messages': (_('Regions uploaded from csv.'),)})
 
 
 # admin.site.register(CustomUser)

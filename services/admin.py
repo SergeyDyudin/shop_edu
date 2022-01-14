@@ -59,9 +59,10 @@ class InvoiceAdmin(admin.ModelAdmin):
 
     def formfield_for_choice_field(self, db_field, request, **kwargs):
         if db_field.name == 'status':
-            if request.user.is_superuser:
+            if not request.user.has_perm('can_change_status'):
                 choices = db_field.get_choices()
                 choices.remove(('Оплачен', _('Оплачен')))
+                choices.remove(('', '---------'))
                 kwargs['choices'] = choices
         return super().formfield_for_choice_field(db_field, request, **kwargs)
 
