@@ -1,3 +1,5 @@
+import csv
+
 from django.contrib import admin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.validators import ASCIIUsernameValidator
@@ -73,6 +75,20 @@ class Region(models.Model):
 
     def __str__(self):
         return f'{self.region}, {self.country}'
+
+    @staticmethod
+    def import_from_csv(file_name: str):
+        """
+        Import regions from csv to database
+        :param file_name:
+        :return:
+        """
+        with open(file_name) as file:
+            reader = csv.reader(file)
+            return Region.objects.bulk_create(
+                [Region(region=row[2], country='Россия') for row in reader][1:],
+                ignore_conflicts=True
+            )
 
 
 class Profile(models.Model):

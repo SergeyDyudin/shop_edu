@@ -25,8 +25,15 @@ class RegionAdmin(admin.ModelAdmin):
         return upload_url + urls
 
     def upload_regions(self, request):
-        # TODO write logic
-        return render(request, 'admin/base_site.html', {'messages': (_('Regions uploaded from csv.'),)})
+        """
+        Upload regions to database from csv-file
+        :param request:
+        :return:
+        """
+        messages = Region.import_from_csv('accounts/region.csv')
+        context = super().changelist_view(request).context_data
+        context['messages'] = messages
+        return render(request, 'admin/change_list.html', context)
 
 
 # admin.site.register(CustomUser)

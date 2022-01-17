@@ -5,18 +5,15 @@ from django.db import migrations
 
 
 def upload_regions(apps, schema_editor):
-    Regions = apps.get_model('accounts', 'Region')
+    Region = apps.get_model('accounts', 'Region')
     db_alias = schema_editor.connection.alias
-    with open('accounts/region.csv') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            Regions(region=row[2], country='Россия').save()
+    Region.import_from_csv('accounts/region.csv')
 
 
 def delete_regions(apps, schema_editor):
-    Regions = apps.get_model('accounts', 'Region')
+    Region = apps.get_model('accounts', 'Region')
     db_alias = schema_editor.connection.alias
-    Regions.objects.all().delete()
+    Region.objects.all().delete()
 
 
 class Migration(migrations.Migration):
