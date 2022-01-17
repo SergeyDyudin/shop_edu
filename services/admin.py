@@ -1,5 +1,5 @@
-from django.contrib import admin
-from django.utils.translation import gettext_lazy as _
+from django.contrib import admin, messages
+from django.utils.translation import gettext_lazy as _, ngettext
 
 from .filters import UnpaidOldInvoiceListFilter
 from .models import Purchase, Rent, Invoice
@@ -56,6 +56,9 @@ class InvoiceAdmin(admin.ModelAdmin):
         'id',
         'user_id__email',
     ]
+    actions = [
+        'make_canceled',
+    ]
 
     def formfield_for_choice_field(self, db_field, request, **kwargs):
         if db_field.name == 'status':
@@ -65,6 +68,18 @@ class InvoiceAdmin(admin.ModelAdmin):
                 choices.remove(('', '---------'))
                 kwargs['choices'] = choices
         return super().formfield_for_choice_field(db_field, request, **kwargs)
+
+    @admin.action(description='Mark invoice status as CANCELED')
+    def make_canceled(self, request, queryset):
+        updated = queryset.update(status='Отменен')
+        self.message_user(
+            request,
+            ngettext(
+                '%d invoice was successfully marked as canceled.',
+                '%d invoices were successfully marked as canceled.',
+                updated,
+            ) % updated, messages.SUCCESS
+        )
 
 
 class PurchaseAdmin(admin.ModelAdmin):
