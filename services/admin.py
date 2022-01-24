@@ -69,14 +69,14 @@ class InvoiceAdmin(admin.ModelAdmin):
                 kwargs['choices'] = choices
         return super().formfield_for_choice_field(db_field, request, **kwargs)
 
-    @admin.action(description='Mark invoice status as CANCELED')
+    @admin.action(description=_('Mark invoice status as CANCELED'))
     def make_canceled(self, request, queryset):
         updated = queryset.update(status='Отменен')
         self.message_user(
             request,
             ngettext(
-                '%d invoice was successfully marked as canceled.',
-                '%d invoices were successfully marked as canceled.',
+                _('%d invoice was successfully marked as canceled.'),
+                _('%d invoices were successfully marked as canceled.'),
                 updated,
             ) % updated, messages.SUCCESS
         )

@@ -96,6 +96,7 @@ class Profile(models.Model):
     phone = models.CharField(max_length=20, validators=[validate_phone], blank=True)
     birthday = models.DateField(_('birthday'), blank=True, null=True)
     region = models.ForeignKey(to=Region, blank=True, null=True, on_delete=models.SET_NULL)
+    currency = models.PositiveIntegerField(_('Virtual currency'), default=0, blank=True)
 
     @property
     def age(self):

@@ -1,8 +1,10 @@
 from django.contrib.auth.admin import UserAdmin
 from django.shortcuts import render
 from django.urls import path
-from django.utils.translation import gettext, gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
+from . import views
+from .forms import ProfileCreationForm, ProfileChangeForm
 from .models import CustomUser, Profile, Region
 from django.contrib import admin
 
@@ -43,6 +45,17 @@ class ProfileInline(admin.StackedInline):
     verbose_name = _('profile')
     verbose_name_plural = _('profiles')
 
+    def get_formset(self, request, obj=None, **kwargs):
+        if not request.user.is_staff:
+            self.readonly_fields = [
+                'currency'
+            ]
+        if obj is None:
+            self.form = ProfileCreationForm
+        else:
+            self.form = ProfileChangeForm
+        return super().get_formset(request, obj, **kwargs)
+
 
 # Define a new User admin
 class CustomUserAdmin(UserAdmin):
@@ -60,10 +73,22 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('email', 'password1', 'password2'),
         }),
     )
+
     ordering = ('email',)
     list_display = ('email', 'first_name', 'last_name', 'is_staff')
     search_fields = ('first_name', 'last_name', 'email')
     inlines = (ProfileInline,)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        upload_url = [
+            path(
+                '<user_id>/send-email/',
+                self.admin_site.admin_view(views.SendEmailView.as_view(model_admin=self)),
+                name='send_email'
+            ),
+        ]
+        return upload_url + urls
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -72,6 +97,17 @@ class ProfileAdmin(admin.ModelAdmin):
         'full_name',
         'region',
     ]
+
+    def get_form(self, request, obj=None, change=False, **kwargs):
+        if not request.user.is_staff:
+            self.readonly_fields = [
+                'currency'
+            ]
+        if obj is None:
+            self.form = ProfileCreationForm
+        else:
+            self.form = ProfileChangeForm
+        return super().get_form(request, obj, change, **kwargs)
 
 
 # Re-register UserAdmin
