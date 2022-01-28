@@ -2,8 +2,11 @@ import datetime
 from http.client import HTTPResponse
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 from django.utils import timezone
 from django.views import View
 from django.views.generic import DetailView, CreateView, FormView, ListView
@@ -16,9 +19,13 @@ from services.forms import RentForm
 from services.models import Rent, Purchase, Invoice
 
 
-class PurchaseView(SuccessMessageMixin, View):
+class PurchaseView(LoginRequiredMixin, SuccessMessageMixin, View):
     success_message = _('Товар %s (%s) добавлен в корзину')
     model = Purchase
+    login_url = reverse_lazy('accounts:login')
+
+    def get(self, request, **kwargs):
+        return redirect('books:item', Item.objects.get(pk=kwargs['pk']).slug)
 
     def post(self, request, **kwargs):
         item = Item.objects.get(pk=kwargs['pk'])
@@ -37,7 +44,7 @@ class PurchaseView(SuccessMessageMixin, View):
         return redirect(request.META['HTTP_REFERER'])
 
 
-class RentView(SuccessMessageMixin, FormView):
+class RentView(LoginRequiredMixin, SuccessMessageMixin, FormView):
     success_message = _('Товар %s добавлен в корзину')
     model = Rent
     template_name = 'services/rent.html'
@@ -90,12 +97,12 @@ class RentView(SuccessMessageMixin, FormView):
             return redirect(request.META['HTTP_REFERER'])
 
 
-class CartView(View):
+class CartView(LoginRequiredMixin, View):
 
     def get(self, request):
         try:
             invoice = Invoice.objects.get(
-                user_id=CustomUser.objects.get(pk=request.user.id),
+                user_id=request.user.id,
                 status='Ожидает оплаты')
         except Invoice.DoesNotExist:
             messages.warning(request, _('Вы еще ничего не добавили в корзину'))
@@ -110,6 +117,25 @@ class CartView(View):
             'invoice': invoice
         }
         return render(request, 'services/cart.html', context)
+
+    def post(self, request):
+        invoice = Invoice.objects.get(
+            user_id=request.user.id,
+            status='Ожидает оплаты')
+        invoice.status = 'Оплачен'
+        invoice.save()
+        messages.info(request, _('Заказ оплачен'))
+        self.email_payment_done(request, invoice)
+        return redirect('books:home')
+
+    def email_payment_done(self, request, invoice):
+        current_site = get_current_site(request)
+        subject = 'Payment is done!'
+        message = render_to_string('services/email_payment_done.html', {
+            'user': self.request.user,
+            'invoice': invoice,
+        })
+        request.user.email_user(subject, message)
 
 
 def delete_service(request, **kwargs):
@@ -131,4 +157,3 @@ class HistoryListView(ListView):
         context = super().get_context_data(object_list=object_list, **kwargs)
         context['rents'] = Rent.objects.filter(invoice__user_id=self.request.user.id).exclude(invoice__status='Отменен')
         return context
-
