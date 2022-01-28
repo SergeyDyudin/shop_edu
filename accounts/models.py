@@ -6,6 +6,7 @@ from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -18,7 +19,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(_('first name'), max_length=150, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_('email address'), unique=True, max_length=50)
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
@@ -63,6 +64,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('accounts:account', kwargs={'pk': self.pk})
+
 
 class Region(models.Model):
     region = models.CharField(max_length=50)
@@ -72,6 +76,7 @@ class Region(models.Model):
         unique_together = ['region', 'country']
         verbose_name = _('region')
         verbose_name_plural = _('regions')
+        ordering = ('region',)
 
     def __str__(self):
         return f'{self.region}, {self.country}'
@@ -97,6 +102,7 @@ class Profile(models.Model):
     birthday = models.DateField(_('birthday'), blank=True, null=True)
     region = models.ForeignKey(to=Region, blank=True, null=True, on_delete=models.SET_NULL)
     currency = models.PositiveIntegerField(_('Virtual currency'), default=0, blank=True)
+    email_confirmed = models.BooleanField(default=False)
 
     @property
     def age(self):

@@ -71,6 +71,14 @@ class Service(models.Model):
     def price(self):
         return self.item.price * self.quantity
 
+    def delete(self, using=None, keep_parents=False):
+        self.item.count_available += self.quantity
+        self.item.save()
+        result_delete = super().delete()
+        if not self.invoice.purchase_set.exists() and not self.invoice.rent_set.exists():
+            self.invoice.delete()
+        return result_delete
+
 
 class Purchase(Service):
 

@@ -1,3 +1,4 @@
+from django.contrib.admin import display
 from django.contrib.auth.admin import UserAdmin
 from django.shortcuts import render
 from django.urls import path
@@ -44,6 +45,9 @@ class ProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name = _('profile')
     verbose_name_plural = _('profiles')
+    readonly_fields = [
+        'email_confirmed',
+    ]
 
     def get_formset(self, request, obj=None, **kwargs):
         if not request.user.is_staff:
@@ -75,7 +79,7 @@ class CustomUserAdmin(UserAdmin):
     )
 
     ordering = ('email',)
-    list_display = ('email', 'first_name', 'last_name', 'is_staff')
+    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'get_email_confirmed')
     search_fields = ('first_name', 'last_name', 'email')
     inlines = (ProfileInline,)
 
@@ -90,12 +94,21 @@ class CustomUserAdmin(UserAdmin):
         ]
         return upload_url + urls
 
+    @display(description='Email confirmed')
+    def get_email_confirmed(self, obj):
+        return obj.profile.email_confirmed
+
+    get_email_confirmed.boolean = True
+
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = [
         'user',
         'full_name',
         'region',
+    ]
+    readonly_fields = [
+        'email_confirmed',
     ]
 
     def get_form(self, request, obj=None, change=False, **kwargs):

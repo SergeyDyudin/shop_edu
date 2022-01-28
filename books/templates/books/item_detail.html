@@ -1,0 +1,37 @@
+{% extends "root_site.html" %}
+{% load i18n %}
+
+
+{% block main-content %}
+    <form action="{% url 'services:rent' object.pk %}">
+        {% csrf_token %}
+        <h1>{{ object.title }}</h1>
+        <p>Описание: {{ object.description }}</p>
+        <p>Категории: {{ object.category.all|join:", " }}</p>
+        <p>Доступно для покупки: {{ object.count_available }}</p>
+        <p>Фото: {{ object.photo }}</p>
+        {% if object.book %}
+            <p>Автор: {{ object.book.author.all|join:", " }}</p>
+            <p>Жанр: {{ object.book.genre.all|join:", " }}</p>
+            <p>Язык: {{ object.book.language }}</p>
+            <p>Издатель: {{ object.book.publisher }}</p>
+            <p>Год издания: {{ object.book.year }}</p>
+        {% elif object.magazine %}
+            <p>Дата выхода:{{ object.magazine.date }}</p>
+            <p>Номер выпуска:{{ object.magazine.number }}</p>
+            <p>Язык: {{ object.magazine.language }}</p>
+        {% elif object.figure %}
+            <p>Персонаж: {{ object.figure.character }}</p>
+            <p>Брэнд: {{ object.figure.brand }}</p>
+            <p>Имя модели: {{ object.figure.model_name }}</p>
+        {% endif %}
+
+        <p><b>Цена: {{ object.price }}</b></p>
+
+        <p><label for="quantity">Количество: </label>
+            <input type="number" value="1" id="quantity" name="quantity" min="1">
+            <input type="submit" formaction="{% url 'services:purchase' object.pk %}" formmethod="post"
+                  value="{% translate 'Купить' %}" name="_purchase">
+            <input type="submit" value="{% translate 'Взять на прокат' %}" name="_rent"></p>
+    </form>
+{% endblock %}

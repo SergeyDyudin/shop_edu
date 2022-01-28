@@ -1,0 +1,11 @@
+{% if types %}
+    <ul class="nav nav-sidebar">
+    {% for type in types %}
+        <li><a href="{% url 'books:type' type %}">{{ type }}</a></li>
+    {% endfor %}
+
+{% else %}
+    <li> <strong >There are no type present.</strong></li>
+
+    </ul>
+{% endif %}

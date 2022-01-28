@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -98,6 +99,9 @@ class Item(models.Model):
     def save_with_slug(self, *args, **kwargs):
         self.slug = transliterate_string(self.title.lower())
         super(Item, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('books:item', kwargs={'slug': self.slug})
 
 
 class Book(Item):

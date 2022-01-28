@@ -1,0 +1,22 @@
+{% extends 'root_site.html' %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} |
+    {{ site_title|default:_('History') }}{% endblock %}
+
+{% block main-content %}
+    <h1><b>Покупки: </b></h1>
+    {% for purchase in object_list %}
+        <h2>Название: {{ purchase.item.title }}</h2>
+        <p>Количество: {{ purchase.quantity }}</p>
+        <p>Цена:{{ purchase.price }}</p>
+        <p>Статус: <b>{{ purchase.invoice.status }}</b></p>
+    {% endfor %}
+    <h1><b>Аренда: </b></h1>
+    {% for rent in rents %}
+        <h2>Название: {{ rent.item.title }}</h2>
+        <p>С: {{ rent.date_from }}</p>
+        <p>По: {{ rent.date_to }}</p>
+        <p>Цена: {{ rent.price }}</p>
+        <p>Статус: <b>{{ rent.invoice.status }}</b></p>
+    {% endfor %}
+{% endblock %}

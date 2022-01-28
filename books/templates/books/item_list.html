@@ -1,0 +1,23 @@
+{% extends "root_site.html" %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        {#        <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>#}
+        {% if title %} &rsaquo; {{ title }}{% endif %}
+    </div>
+{% endblock %}
+
+{% block main-content %}
+    {% for item in item_list %}
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.description }}</p>
+        <p>Цена - {{ item.price }}</p>
+        <p>Категории:
+            {% for category in item.category.all %}
+                <a href="{% url 'books:category' category %}">{{ category }}</a>
+            {% endfor %}</p>
+        <a href="{{ item.get_absolute_url }}">Подробнее</a><br><br>
+    {% empty %}
+        <p>No item yet.</p>
+    {% endfor %}
+{% endblock %}
