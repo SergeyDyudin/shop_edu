@@ -35,6 +35,10 @@
                 <p><a href="{% url 'accounts:login' %}"> Login </a></p>
                 <a href="{% url 'accounts:registration' %}"> Registration </a>
             {% endif %}
+            <form>
+                <br><br>
+                <p><input type="search" name="search_item" formaction="{% url 'books:home' %}" placeholder="Search"></p>
+            </form>
         </section>
     </div>
 {% endblock %}

@@ -12,6 +12,11 @@ class ItemsListView(ListView):
         'price'
     ]
 
+    def get(self, request, *args, **kwargs):
+        if self.request.GET['search_item']:
+            self.queryset = Item.objects.filter(title__icontains=self.request.GET['search_item'])
+        return super(ItemsListView, self).get(request, *args, **kwargs)
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ItemsListView, self).get_context_data(object_list=object_list, **kwargs)
         context.update({
