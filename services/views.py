@@ -106,13 +106,12 @@ class CartView(LoginRequiredMixin, View):
                 status='Ожидает оплаты')
         except Invoice.DoesNotExist:
             messages.warning(request, _('Вы еще ничего не добавили в корзину'))
-            try:
-                # TODO: Переделать ссылку и возможно сам алгоритм
-                if request.META['HTTP_REFERER'] == 'http://' + request.get_host() + reverse('services:cart'):
-                    return redirect('books:home')
-                return redirect(request.META['HTTP_REFERER'])
-            except KeyError:
-                return redirect('books:home')
+            invoice = None
+            # if request.META.get('HTTP_REFERER', False):
+            #     if request.META['HTTP_REFERER'] == request.build_absolute_uri():
+            #         return redirect('books:home')
+            #     return redirect(request.META['HTTP_REFERER'])
+            # return redirect('books:home')
         context = {
             'invoice': invoice
         }

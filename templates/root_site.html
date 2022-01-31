@@ -1,10 +1,14 @@
 {% extends "admin/base_site.html" %}
 
-{% load items_extras %}
+{% load items_extras services_extras %}
+
+{% block title %} {{ title }} {% endblock %}
 
 {% block branding %}
     <h1 id="site-name"><a href="{% url 'books:home' %}">{{ site_header|default:_('Book store') }}</a></h1>
 {% endblock %}
+
+{% block content_title %}{% endblock %}
 
 {% block content %}
     <div class="content" style="display: flex; gap: 2rem;">
@@ -29,7 +33,7 @@
             {% if  request.user.id %}
                 <h3>Привет, {{ request.user.first_name }}</h3>
                 <p><a href="{% url 'accounts:account' request.user.id %}"> Account </a></p>
-                <p><a href="{% url 'services:cart' %}"> Cart </a></p>
+                <p><a href="{% url 'services:cart' %}"> Cart ({% count_items request.user %}) </a></p>
                 <a href="{% url 'accounts:logout' %}"> Logout </a><br>
             {% else %}
                 <p><a href="{% url 'accounts:login' %}"> Login </a></p>
