@@ -1,4 +1,5 @@
 {% extends "root_site.html" %}
+{% load i18n %}
 
 {% block breadcrumbs %}
     <div class="breadcrumbs">
@@ -10,14 +11,14 @@
 {% block main-content %}
     {% for item in item_list %}
         <h2>{{ item.title }}</h2>
-        <p>{{ item.description }}</p>
-        <p>Цена - {{ item.price }}</p>
-        <p>Категории:
+        <p>{{ item.description|truncatewords:30|linebreaks }}</p>
+        <p>{% translate 'Цена' %} - {{ item.price }}</p>
+        <p>{% translate 'Категории' %}:
             {% for category in item.category.all %}
                 <a href="{% url 'books:category' category %}">{{ category }}</a>
             {% endfor %}</p>
-        <a href="{{ item.get_absolute_url }}">Подробнее</a><br><br>
+        <a href="{{ item.get_absolute_url }}">{% translate 'Подробнее' %}</a><br><br>
     {% empty %}
-        <p>No item yet.</p>
+        <p>{% translate 'No item yet.' %}</p>
     {% endfor %}
 {% endblock %}

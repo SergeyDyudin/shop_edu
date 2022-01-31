@@ -1,3 +1,5 @@
+{% load i18n %}
+
 {% if types %}
     <ul class="nav nav-sidebar">
     {% for type in types %}
@@ -5,7 +7,7 @@
     {% endfor %}
 
 {% else %}
-    <li> <strong >There are no type present.</strong></li>
+    <li> <strong >{% translate 'There are no type present.' %}</strong></li>
 
     </ul>
 {% endif %}

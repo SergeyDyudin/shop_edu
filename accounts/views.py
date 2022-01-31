@@ -138,7 +138,9 @@ class AccountView(LoginRequiredMixin, UpdateView):
 
 class LoginView(View):
     def get(self, request):
-        context = {}
+        context = {
+            'title': _('Войти'),
+        }
         if request.user.is_authenticated:
             return HttpResponseRedirect(reverse('accounts:account', args=[request.user.id]))
         context['form'] = LoginForm(initial={'email': '', 'password': ''})

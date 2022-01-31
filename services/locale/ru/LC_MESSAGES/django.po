@@ -1,0 +1,262 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-01-31 12:21+0300\n"
+"PO-Revision-Date: 2022-01-31 11:53+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: services/admin.py:14 services/models.py:86
+msgid "purchase"
+msgstr "покупка"
+
+#: services/admin.py:15 services/models.py:87
+msgid "purchases"
+msgstr "покупки"
+
+#: services/admin.py:27 services/models.py:102
+msgid "rent"
+msgstr "аренда"
+
+#: services/admin.py:28 services/models.py:103
+msgid "rents"
+msgstr "аренда"
+
+#: services/admin.py:67 services/models.py:13
+msgid "Оплачен"
+msgstr ""
+
+#: services/admin.py:72
+msgid "Mark invoice status as CANCELED"
+msgstr "Пометить статус заказа как ОТМЕНЕННЫЙ"
+
+#: services/admin.py:78
+#, python-format
+msgid "%d invoice was successfully marked as canceled."
+msgstr "%d заказ был успешно помечен, как отмененный"
+
+#: services/admin.py:79
+#, python-format
+msgid "%d invoices were successfully marked as canceled."
+msgstr "%d заказы были успешно помечены, как отмененные"
+
+#: services/admin.py:103 services/admin.py:126
+msgid "Status"
+msgstr "Статус"
+
+#: services/filters.py:7
+msgid "unpaid invoices by"
+msgstr "неоплаченный заказ"
+
+#: services/filters.py:13
+msgid "Last week"
+msgstr "Последняя неделя"
+
+#: services/filters.py:14
+msgid "Last month"
+msgstr "Последний месяц"
+
+#: services/filters.py:15
+msgid "Last year"
+msgstr "Последний год"
+
+#: services/models.py:14
+msgid "Ожидает оплаты"
+msgstr ""
+
+#: services/models.py:15
+msgid "Отменен"
+msgstr ""
+
+#: services/models.py:20
+msgid "user"
+msgstr "пользователь"
+
+#: services/models.py:27
+msgid "status"
+msgstr "статус"
+
+#: services/models.py:30
+msgid "date created"
+msgstr "дата создания"
+
+#: services/models.py:34
+msgid "status updated"
+msgstr "статус обновлен"
+
+#: services/models.py:39 services/models.py:61
+msgid "invoice"
+msgstr "заказ"
+
+#: services/models.py:40
+msgid "invoices"
+msgstr "заказы"
+
+#: services/models.py:42
+msgid "Can change status"
+msgstr ""
+
+#: services/models.py:49 services/templates/services/email_payment_done.html:6
+msgid "Total price"
+msgstr "Общая сумма"
+
+#: services/models.py:60
+msgid "item"
+msgstr ""
+
+#: services/models.py:62
+msgid "quantity"
+msgstr "количество"
+
+#: services/models.py:91
+msgid "Date from"
+msgstr "Дата с "
+
+#: services/models.py:92
+msgid "Date to"
+msgstr "Дата по"
+
+#: services/models.py:94
+msgid "daily payment"
+msgstr "ежедневный платеж"
+
+#: services/models.py:96 services/templates/services/email_payment_done.html:14
+msgid "Daily payment"
+msgstr "Ежедневный платеж"
+
+#: services/templates/services/cart.html:9
+msgid "Дата создания"
+msgstr ""
+
+#: services/templates/services/cart.html:10
+msgid "Статус заказа"
+msgstr ""
+
+#: services/templates/services/cart.html:11
+msgid "Итоговая цена"
+msgstr ""
+
+#: services/templates/services/cart.html:13
+msgid "Покупка"
+msgstr ""
+
+#: services/templates/services/cart.html:16
+#: services/templates/services/cart.html:27
+#: services/templates/services/history.html:11
+msgid "Количество"
+msgstr ""
+
+#: services/templates/services/cart.html:17
+#: services/templates/services/cart.html:28
+msgid "Фото"
+msgstr ""
+
+#: services/templates/services/cart.html:20
+#: services/templates/services/cart.html:31
+msgid "Убрать из корзины"
+msgstr ""
+
+#: services/templates/services/cart.html:24
+#: services/templates/services/history.html:15
+msgid "Аренда"
+msgstr ""
+
+#: services/templates/services/cart.html:35
+msgid "Оплатить покупки"
+msgstr ""
+
+#: services/templates/services/cart.html:38
+msgid "Корзина пуста"
+msgstr ""
+
+#: services/templates/services/email_payment_done.html:4
+msgid "Hi"
+msgstr "Привет"
+
+#: services/templates/services/email_payment_done.html:6
+msgid "You paid the order"
+msgstr "Вы оплатили заказ"
+
+#: services/templates/services/email_payment_done.html:9
+#: services/templates/services/email_payment_done.html:16
+msgid "Price"
+msgstr "Цена"
+
+#: services/templates/services/email_payment_done.html:15
+msgid "From"
+msgstr "С"
+
+#: services/templates/services/history.html:5
+msgid "History"
+msgstr "История"
+
+#: services/templates/services/history.html:8
+msgid "Покупки"
+msgstr ""
+
+#: services/templates/services/history.html:10
+#: services/templates/services/history.html:17
+msgid "Название"
+msgstr ""
+
+#: services/templates/services/history.html:12
+#: services/templates/services/history.html:20
+msgid "Цена"
+msgstr ""
+
+#: services/templates/services/history.html:13
+#: services/templates/services/history.html:21
+msgid "Статус"
+msgstr ""
+
+#: services/templates/services/history.html:18
+msgid "С"
+msgstr ""
+
+#: services/templates/services/history.html:19
+msgid "По"
+msgstr ""
+
+#: services/templates/services/rent.html:8
+msgid "Взять на прокат"
+msgstr ""
+
+#: services/views.py:23
+#, python-format
+msgid "Товар %s (%s) добавлен в корзину"
+msgstr ""
+
+#: services/views.py:43
+msgid "Неверное количество товара"
+msgstr ""
+
+#: services/views.py:48
+#, python-format
+msgid "Товар %s добавлен в корзину"
+msgstr ""
+
+#: services/views.py:96
+msgid "Товар отсутствует на складе в данный момент"
+msgstr ""
+
+#: services/views.py:108
+msgid "Вы еще ничего не добавили в корзину"
+msgstr ""
+
+#: services/views.py:126
+msgid "Заказ оплачен"
+msgstr ""

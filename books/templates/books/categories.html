@@ -1,12 +1,14 @@
+{% load i18n %}
+
 {% if cats %}
     <ul class="nav nav-sidebar">
-    <li><a href="{% url 'books:category' 'Все' %}"> Все </a></li>
+    <li><a href="{% url 'books:category' 'Все' %}">{% translate 'Все' %}</a></li>
     {% for category in cats %}
         <li><a href="{% url 'books:category' category.name %}">{{ category.name }}</a></li>
     {% endfor %}
 
 {% else %}
-    <li> <strong >There are no category present.</strong></li>
+    <li> <strong >{% translate 'There are no category present.' %}</strong></li>
 
     </ul>
 {% endif %}

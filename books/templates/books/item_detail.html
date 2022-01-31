@@ -5,30 +5,30 @@
 {% block main-content %}
     <form action="{% url 'services:rent' object.pk %}">
         {% csrf_token %}
-        <h1>{{ object.title }}</h1>
-        <p>Описание: {{ object.description }}</p>
-        <p>Категории: {{ object.category.all|join:", " }}</p>
-        <p>Доступно для покупки: {{ object.count_available }}</p>
-        <p>Фото: {{ object.photo }}</p>
+        <h1><b>{{ object.title }}</b></h1>
+        <p>{% translate 'Описание' %}: {{ object.description|linebreaks }}</p>
+        <p>{% translate 'Категории' %}: {{ object.category.all|join:", " }}</p>
+        <p>{% translate 'Доступно для покупки' %}: {{ object.count_available }}</p>
+        <p>{% translate 'Фото' %}: {{ object.photo }}</p>
         {% if object.book %}
-            <p>Автор: {{ object.book.author.all|join:", " }}</p>
-            <p>Жанр: {{ object.book.genre.all|join:", " }}</p>
-            <p>Язык: {{ object.book.language }}</p>
-            <p>Издатель: {{ object.book.publisher }}</p>
-            <p>Год издания: {{ object.book.year }}</p>
+            <p>{% translate 'Автор' %}: {{ object.book.author.all|join:", " }}</p>
+            <p>{% translate 'Жанр' %}: {{ object.book.genre.all|join:", " }}</p>
+            <p>{% translate 'Язык' %}: {{ object.book.language }}</p>
+            <p>{% translate 'Издатель' %}: {{ object.book.publisher }}</p>
+            <p>{% translate 'Год издания' %}: {{ object.book.year }}</p>
         {% elif object.magazine %}
-            <p>Дата выхода:{{ object.magazine.date }}</p>
-            <p>Номер выпуска:{{ object.magazine.number }}</p>
-            <p>Язык: {{ object.magazine.language }}</p>
+            <p>{% translate 'Дата выхода' %}:{{ object.magazine.date }}</p>
+            <p>{% translate 'Номер выпуска' %}:{{ object.magazine.number }}</p>
+            <p>{% translate 'Язык' %}: {{ object.magazine.language }}</p>
         {% elif object.figure %}
-            <p>Персонаж: {{ object.figure.character }}</p>
-            <p>Брэнд: {{ object.figure.brand }}</p>
-            <p>Имя модели: {{ object.figure.model_name }}</p>
+            <p>{% translate 'Персонаж' %}: {{ object.figure.character }}</p>
+            <p>{% translate 'Брэнд' %}: {{ object.figure.brand }}</p>
+            <p>{% translate 'Имя модели' %}: {{ object.figure.model_name }}</p>
         {% endif %}
 
-        <p><b>Цена: {{ object.price }}</b></p>
+        <p><b>{% translate 'Цена' %}: {{ object.price }}</b></p>
 
-        <p><label for="quantity">Количество: </label>
+        <p><label for="quantity">{% translate 'Количество' %}: </label>
             <input type="number" value="1" id="quantity" name="quantity" min="1">
             <input type="submit" formaction="{% url 'services:purchase' object.pk %}" formmethod="post"
                   value="{% translate 'Купить' %}" name="_purchase">

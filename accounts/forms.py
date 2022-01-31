@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm, PasswordResetForm
+from django.utils.translation import gettext as _
 
 from accounts.models import CustomUser, Profile, Region
 
@@ -27,10 +28,10 @@ class AccountForm(forms.ModelForm):
     # region_choices = list(Region.objects.all())
     # region_choices = zip(region_choices, region_choices)
     # region = forms.CharField(widget=forms.Select(choices=region_choices), required=False)
-    region = forms.ModelChoiceField(queryset=Region.objects.all(), widget=forms.Select(), required=False)
-    phone = forms.CharField(max_length=80, validators=[validate_phone], required=False)
-    birthday = forms.DateField(widget=forms.SelectDateWidget(), help_text='Format: MM-DD-YYYY', required=False)
-    currency = forms.IntegerField(widget=forms.NumberInput(attrs={'readonly': True}))
+    region = forms.ModelChoiceField(label=_('Регион'), queryset=Region.objects.all(), widget=forms.Select(), required=False)
+    phone = forms.CharField(label=_('Телефон'), max_length=80, validators=[validate_phone], required=False)
+    birthday = forms.DateField(label=_('День рождения'), widget=forms.SelectDateWidget(), required=False)
+    currency = forms.IntegerField(label=_('Виртуальная валюта'), widget=forms.NumberInput(attrs={'readonly': True}))
 
     class Meta:
         model = CustomUser
@@ -44,8 +45,8 @@ class AccountForm(forms.ModelForm):
 
 class SendEmailForm(forms.ModelForm):
 
-    subject = forms.CharField(label='Subject')
-    body = forms.CharField(widget=forms.Textarea, label='Text')
+    subject = forms.CharField(label=_('Тема'))
+    body = forms.CharField(widget=forms.Textarea, label=_('Текст письма'))
 
     class Meta:
         model = CustomUser
@@ -70,9 +71,9 @@ class LoginForm(forms.Form):
 class RegistrationForm(UserCreationForm):
     CHOICES = list(Region.objects.all())
     CHOICES = zip(CHOICES, CHOICES)
-    region = forms.CharField(widget=forms.Select(choices=CHOICES), required=False)
-    phone = forms.CharField(max_length=80, required=False)
-    birthday = forms.DateField(help_text='Required. Format: YYYY-MM-DD', required=False)
+    region = forms.CharField(label=_('Регион'), widget=forms.Select(choices=CHOICES), required=False)
+    phone = forms.CharField(label=_('Телефон'), max_length=80, required=False)
+    birthday = forms.DateField(label=_('День рождения'), help_text=_('Required. Format: YYYY-MM-DD'), required=False)
 
     class Meta:
         model = CustomUser

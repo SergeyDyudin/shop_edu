@@ -8,13 +8,13 @@ from utils.utils import transliterate_string
 
 
 class Language(models.Model):
-    code = models.CharField(max_length=5)
-    name = models.CharField(max_length=30)
+    code = models.CharField(_('Код'), max_length=5)
+    name = models.CharField(_('Название'), max_length=30)
 
     class Meta:
         unique_together = ['code', 'name']
-        verbose_name = 'Language'
-        verbose_name_plural = 'Languages'
+        verbose_name = _('Language')
+        verbose_name_plural = _('Languages')
 
     def __str__(self):
         return self.name
@@ -25,8 +25,8 @@ class Publisher(models.Model):
     address = models.TextField(_('address'))
 
     class Meta:
-        verbose_name = 'Publisher'
-        verbose_name_plural = 'Publishers'
+        verbose_name = _('Publisher')
+        verbose_name_plural = _('Publishers')
 
     def __str__(self):
         return self.name
@@ -38,8 +38,8 @@ class Author(models.Model):
     photo = models.ImageField(verbose_name=_("author's photo"), upload_to='books/authors_photo', blank=True, null=True)
 
     class Meta:
-        verbose_name = 'Author'
-        verbose_name_plural = 'Authors'
+        verbose_name = _('Author')
+        verbose_name_plural = _('Authors')
 
     def __str__(self):
         return self.name
@@ -49,8 +49,8 @@ class Genre(models.Model):
     name = models.CharField(_('genre'), max_length=30, unique=True, blank=False)
 
     class Meta:
-        verbose_name = 'Genre'
-        verbose_name_plural = 'Genres'
+        verbose_name = _('Genre')
+        verbose_name_plural = _('Genres')
 
     def __str__(self):
         return self.name
@@ -61,20 +61,20 @@ class Category(models.Model):
     description = models.TextField(_('description'), blank=True)
 
     class Meta:
-        verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
 
     def __str__(self):
         return self.name
 
 
 class Brand(models.Model):
-    name = models.CharField(max_length=70, unique=True, blank=False)
-    description = models.TextField(max_length=500, blank=True)
+    name = models.CharField(_('Название'), max_length=70, unique=True, blank=False)
+    description = models.TextField(_('Описание'), max_length=500, blank=True)
 
     class Meta:
-        verbose_name = 'brand'
-        verbose_name_plural = 'brands'
+        verbose_name = _('brand')
+        verbose_name_plural = _('brands')
 
     def __str__(self):
         return self.name
@@ -90,8 +90,8 @@ class Item(models.Model):
     slug = models.SlugField(_('URL'), unique=True, blank=False)
 
     class Meta:
-        verbose_name = 'Item'
-        verbose_name_plural = 'Items'
+        verbose_name = _('Item')
+        verbose_name_plural = _('Items')
 
     def __str__(self):
         return self.title
@@ -112,8 +112,8 @@ class Book(Item):
     year = models.DateField(verbose_name=_('year'))
 
     class Meta:
-        verbose_name = 'Book'
-        verbose_name_plural = 'Books'
+        verbose_name = _('Book')
+        verbose_name_plural = _('Books')
 
     @admin.display(description='Author')
     def get_authors(self):
@@ -126,18 +126,18 @@ class Magazine(Item):
     language = models.ForeignKey(to=Language, on_delete=models.CASCADE, verbose_name=_('language'))
 
     class Meta:
-        verbose_name = 'magazine'
-        verbose_name_plural = 'magazines'
+        verbose_name = _('magazine')
+        verbose_name_plural = _('magazines')
 
     def __str__(self):
         return f'[{self.date}] {self.title}'
 
 
 class Figure(Item):
-    character = models.CharField(max_length=80, blank=True)
+    character = models.CharField(_('Персонаж'), max_length=80, blank=True)
     brand = models.ForeignKey(to=Brand, on_delete=models.CASCADE)
-    model_name = models.CharField(max_length=80, blank=True)
+    model_name = models.CharField(_('Название модели'), max_length=80, blank=True)
 
     class Meta:
-        verbose_name = 'figure'
-        verbose_name_plural = 'figures'
+        verbose_name = _('figure')
+        verbose_name_plural = _('figures')

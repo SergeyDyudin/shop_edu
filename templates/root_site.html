@@ -1,6 +1,6 @@
 {% extends "admin/base_site.html" %}
 
-{% load items_extras services_extras %}
+{% load items_extras services_extras i18n %}
 
 {% block title %} {{ title }} {% endblock %}
 
@@ -14,12 +14,12 @@
     <div class="content" style="display: flex; gap: 2rem;">
         <section class="menu">
             <section class="menu__type">
-                <h2>Товары</h2>
+                <h2>{% translate 'Товары' %}</h2>
                 {% list_type %}
             </section>
 
             <section class="menu__category">
-                <h2>Категории</h2>
+                <h2>{% translate 'Категории' %}</h2>
                 {% list_category %}
             </section>
 
@@ -32,16 +32,16 @@
         <section class="account" style="right: 5em; position: absolute;">
             {% if  request.user.id %}
                 <h3>Привет, {{ request.user.first_name }}</h3>
-                <p><a href="{% url 'accounts:account' request.user.id %}"> Account </a></p>
-                <p><a href="{% url 'services:cart' %}"> Cart ({% count_items request.user %}) </a></p>
-                <a href="{% url 'accounts:logout' %}"> Logout </a><br>
+                <p><a href="{% url 'accounts:account' request.user.id %}"> {% translate 'Account' %} </a></p>
+                <p><a href="{% url 'services:cart' %}"> {% translate 'Корзина' %} ({% count_items request.user %}) </a></p>
+                <a href="{% url 'accounts:logout' %}"> {% translate 'Выйти' %} </a><br>
             {% else %}
-                <p><a href="{% url 'accounts:login' %}"> Login </a></p>
-                <a href="{% url 'accounts:registration' %}"> Registration </a>
+                <p><a href="{% url 'accounts:login' %}"> {% translate 'Login' %} </a></p>
+                <a href="{% url 'accounts:registration' %}"> {% translate 'Registration' %} </a>
             {% endif %}
             <form>
                 <br><br>
-                <p><input type="search" name="search_item" formaction="{% url 'books:home' %}" placeholder="Search"></p>
+                <p><input type="search" name="search_item" formaction="{% url 'books:home' %}" placeholder={% translate "Search" %}></p>
             </form>
         </section>
     </div>

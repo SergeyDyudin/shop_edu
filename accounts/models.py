@@ -69,8 +69,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Region(models.Model):
-    region = models.CharField(max_length=50)
-    country = models.CharField(max_length=50)
+    region = models.CharField(_('Регион'), max_length=50)
+    country = models.CharField(_('Страна'), max_length=50)
 
     class Meta:
         unique_together = ['region', 'country']
@@ -98,11 +98,11 @@ class Region(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=20, validators=[validate_phone], blank=True)
-    birthday = models.DateField(_('birthday'), blank=True, null=True)
+    phone = models.CharField(_('Телефон'), max_length=20, validators=[validate_phone], blank=True)
+    birthday = models.DateField(_('Birthday'), blank=True, null=True)
     region = models.ForeignKey(to=Region, blank=True, null=True, on_delete=models.SET_NULL)
     currency = models.PositiveIntegerField(_('Virtual currency'), default=0, blank=True)
-    email_confirmed = models.BooleanField(default=False)
+    email_confirmed = models.BooleanField(_('Email подтвержден'), default=False)
 
     @property
     def age(self):

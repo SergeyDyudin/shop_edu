@@ -94,7 +94,7 @@ class CustomUserAdmin(UserAdmin):
         ]
         return upload_url + urls
 
-    @display(description='Email confirmed')
+    @display(description=_('Email confirmed'))
     def get_email_confirmed(self, obj):
         return obj.profile.email_confirmed
 

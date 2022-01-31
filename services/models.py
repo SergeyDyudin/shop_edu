@@ -83,8 +83,8 @@ class Service(models.Model):
 class Purchase(Service):
 
     class Meta:
-        verbose_name = 'purchase'
-        verbose_name_plural = 'purchases'
+        verbose_name = _('purchase')
+        verbose_name_plural = _('purchases')
 
 
 class Rent(Service):
@@ -99,8 +99,8 @@ class Rent(Service):
     )
 
     class Meta:
-        verbose_name = 'rent'
-        verbose_name_plural = 'rents'
+        verbose_name = _('rent')
+        verbose_name_plural = _('rents')
 
     @property
     def price(self):

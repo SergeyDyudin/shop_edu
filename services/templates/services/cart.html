@@ -6,26 +6,26 @@
         <form>
             {% csrf_token %}
             <h1>{{ invoice }}</h1>
-            <p>Дата создания: {{ invoice.date_created }}</p>
-            <p>Статус заказа: {{ invoice.status }}</p>
-            <p>Итоговая цена: {{ invoice.price_total }}</p>
+            <p>{% translate 'Дата создания' %}: {{ invoice.date_created }}</p>
+            <p>{% translate 'Статус заказа' %}: {{ invoice.status }}</p>
+            <p>{% translate 'Итоговая цена' %}: {{ invoice.price_total }}</p>
             {% if invoice.purchase_set %}
-                <h1>Покупка: </h1>
+                <h1>{% translate 'Покупка' %}: </h1>
                 {% for purchase in invoice.purchase_set.all %}
                     <h1>{{ purchase.item.title }}</h1>
-                    <p>Количество: {{ purchase.quantity }}</p>
-                    <p>Фото: {{ purchase.item.photo }}</p>
+                    <p>{% translate 'Количество' %}: {{ purchase.quantity }}</p>
+                    <p>{% translate 'Фото' %}: {{ purchase.item.photo }}</p>
                     <p><input type="submit" formaction="{% url 'services:delete_service' 'purchase' purchase.pk %}"
                               formmethod="post"
                               value="{% translate 'Убрать из корзины' %}" name="_bye"></p>
                 {% endfor %}
             {% endif %}
             {% if invoice.rent_set %}
-                <h1>Аренда: </h1>
+                <h1>{% translate 'Аренда' %}: </h1>
                 {% for rent in invoice.rent_set.all %}
                     <h1>{{ rent.item.title }}</h1>
-                    <p>Количество: {{ rent.quantity }}</p>
-                    <p>Фото: {{ rent.item.photo }}</p>
+                    <p>{% translate 'Количество' %}: {{ rent.quantity }}</p>
+                    <p>{% translate 'Фото' %}: {{ rent.item.photo }}</p>
                     <p><input type="submit" formaction="{% url 'services:delete_service' 'rent' rent.pk %}"
                               formmethod="post"
                               value="{% translate 'Убрать из корзины' %}" name="_bye"></p>

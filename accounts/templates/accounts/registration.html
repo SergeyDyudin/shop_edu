@@ -1,4 +1,5 @@
 {% extends 'root_site.html' %}
+{% load i18n %}
 
 {% block content %}
     <form method="post">
@@ -15,6 +16,6 @@
         {% endfor %}
       </p>
     {% endfor %}
-    <p><input type="submit" value="Registration" name="_registration_account"></p>
+    <p><input type="submit" name="_registration_account" value={% translate "Registration" %}></p>
   </form>
 {% endblock %}

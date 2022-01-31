@@ -1,22 +1,23 @@
 {% extends 'root_site.html' %}
+{% load i18n %}
 
 {% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} |
     {{ site_title|default:_('History') }}{% endblock %}
 
 {% block main-content %}
-    <h1><b>Покупки: </b></h1>
+    <h1><b>{% translate 'Покупки' %}: </b></h1>
     {% for purchase in object_list %}
-        <h2>Название: {{ purchase.item.title }}</h2>
-        <p>Количество: {{ purchase.quantity }}</p>
-        <p>Цена:{{ purchase.price }}</p>
-        <p>Статус: <b>{{ purchase.invoice.status }}</b></p>
+        <h2>{% translate 'Название' %}: {{ purchase.item.title }}</h2>
+        <p>{% translate 'Количество' %}: {{ purchase.quantity }}</p>
+        <p>{% translate 'Цена' %}:{{ purchase.price }}</p>
+        <p>{% translate 'Статус' %}: <b>{{ purchase.invoice.status }}</b></p>
     {% endfor %}
-    <h1><b>Аренда: </b></h1>
+    <h1><b>{% translate 'Аренда' %}: </b></h1>
     {% for rent in rents %}
-        <h2>Название: {{ rent.item.title }}</h2>
-        <p>С: {{ rent.date_from }}</p>
-        <p>По: {{ rent.date_to }}</p>
-        <p>Цена: {{ rent.price }}</p>
-        <p>Статус: <b>{{ rent.invoice.status }}</b></p>
+        <h2>{% translate 'Название' %}: {{ rent.item.title }}</h2>
+        <p>{% translate 'С' %}: {{ rent.date_from }}</p>
+        <p>{% translate 'По' %}: {{ rent.date_to }}</p>
+        <p>{% translate 'Цена' %}: {{ rent.price }}</p>
+        <p>{% translate 'Статус' %}: <b>{{ rent.invoice.status }}</b></p>
     {% endfor %}
 {% endblock %}

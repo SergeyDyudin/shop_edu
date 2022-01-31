@@ -1,6 +1,6 @@
 {% extends 'root_site.html' %}
 
-{% load static %}
+{% load static i18n %}
 
 {% block extrastyle %}
     {{ block.super }}
@@ -11,13 +11,11 @@
 {% block content %}
     <form class="box" action="" method="POST">
         {% csrf_token%}
-        <h1>Login</h1>
-{#<!--        {{ form.email }}-->#}
-{#<!--        {{ form.password }}-->#}
-        <input type="text" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit" name="" value="Login">
-        <a href="{% url 'accounts:password_reset' %}">Reset password</a>
+        <h1>{% translate "Login" %}</h1>
+        <input type="text" name="email" placeholder={% translate "Email"%}>
+        <input type="password" name="password" placeholder={% translate "Password"%}>
+        <input type="submit" name="" value={% translate "Login" %}>
+        <a href="{% url 'accounts:password_reset' %}">{% translate "Reset password" %}</a>
         {% for message in messages %}
             <p style="color: white" id="messages">{{ message }}</p>
         {% endfor %}
