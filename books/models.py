@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from books.managers import AdultFiltered
 from utils.utils import transliterate_string
 
 
@@ -88,6 +89,8 @@ class Item(models.Model):
     price = models.PositiveIntegerField(_('price'))
     photo = models.ImageField(verbose_name=_('photo'), upload_to='items/photo/', blank=True, null=True)
     slug = models.SlugField(_('URL'), unique=True, blank=False)
+
+    objects = AdultFiltered()
 
     class Meta:
         verbose_name = _('Item')

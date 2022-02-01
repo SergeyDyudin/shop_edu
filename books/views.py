@@ -14,7 +14,9 @@ class ItemsListView(ListView):
 
     def get(self, request, *args, **kwargs):
         if self.request.GET.get('search_item', False):
-            self.queryset = Item.objects.filter(title__icontains=self.request.GET['search_item'])
+            self.queryset = Item.objects.adult_control(self.request.user).\
+                filter(title__icontains=self.request.GET['search_item'])
+        self.queryset = Item.objects.adult_control(self.request.user)
         return super(ItemsListView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -70,8 +72,8 @@ class CategoryListView(ListView):
 
     def get_queryset(self):
         if self.kwargs['cat'] == 'Все':
-            return self.model.objects.all()
-        return self.model.objects.filter(category__name=self.kwargs['cat'])
+            return self.model.objects.adult_control(self.request.user)
+        return self.model.objects.adult_control(self.request.user).filter(category__name=self.kwargs['cat'])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -85,19 +87,18 @@ class TypeListView(ListView):
     model = Item
     template_name = 'books/item_list.html'
 
+    MAPPING_TYPE_MODEL = {
+        'Книги': Book,
+        'Журналы': Magazine,
+        'Фигурки': Figure
+    }
+
     def get_queryset(self):
-        if self.kwargs['type'] == 'Все товары':
-            return self.model.objects.all()
         self.get_type()
-        return self.model.objects.all()
+        return self.model.objects.adult_control(self.request.user)
 
     def get_type(self):
-        if self.kwargs['type'] == 'Книги':
-            self.model = Book
-        elif self.kwargs['type'] == 'Журналы':
-            self.model = Magazine
-        elif self.kwargs['type'] == 'Фигурки':
-            self.model = Figure
+        self.model = self.MAPPING_TYPE_MODEL.get(self.kwargs['type'], Item)
 
     def get_context_object_name(self, object_list):
         return 'item_list'
