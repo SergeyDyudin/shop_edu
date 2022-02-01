@@ -39,9 +39,21 @@ class PurchaseView(LoginRequiredMixin, SuccessMessageMixin, View):
             item.count_available -= quantity
             item.save()
             messages.success(self.request, self.success_message % (item, quantity))
+            self.email_add_rent(request, {'item': item})
             return redirect('services:cart')
         messages.error(self.request, _('Неверное количество товара'))
         return redirect(request.META['HTTP_REFERER'])
+
+    def email_add_rent(self, request, data):
+        subject = _(f'Add {data["item"]} to cart')
+        current_site = get_current_site(request)
+        message = render_to_string('services/email_add_to_cart.html', {
+            'user': self.request.user,
+            'data': data,
+            'current_site': current_site,
+            'cart_link': request.build_absolute_uri(reverse('services:cart'))
+        })
+        request.user.email_user(subject, message)
 
 
 class RentView(LoginRequiredMixin, SuccessMessageMixin, FormView):
@@ -92,9 +104,21 @@ class RentView(LoginRequiredMixin, SuccessMessageMixin, FormView):
                 item.count_available -= 1
                 item.save()
                 messages.success(self.request, self.success_message % item.title)
+                self.email_add_rent(request, form.cleaned_data)
                 return redirect('services:cart')
             messages.error(self.request, _('Товар отсутствует на складе в данный момент'))
             return redirect(request.META['HTTP_REFERER'])
+
+    def email_add_rent(self, request, data):
+        subject = f'Add {data["item"]} to cart'
+        current_site = get_current_site(request)
+        message = render_to_string('services/email_add_to_cart.html', {
+            'user': self.request.user,
+            'data': data,
+            'current_site': current_site,
+            'cart_link': request.build_absolute_uri(reverse('services:cart'))
+        })
+        request.user.email_user(subject, message)
 
 
 class CartView(LoginRequiredMixin, View):
@@ -133,6 +157,7 @@ class CartView(LoginRequiredMixin, View):
         message = render_to_string('services/email_payment_done.html', {
             'user': self.request.user,
             'invoice': invoice,
+            'current_site': current_site,
         })
         request.user.email_user(subject, message)
 

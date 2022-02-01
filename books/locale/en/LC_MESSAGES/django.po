@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-31 12:21+0300\n"
+"POT-Creation-Date: 2022-02-01 09:28+0300\n"
 "PO-Revision-Date: 2022-01-31 11:40+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Enter title, price"
 msgstr ""
 
-#: books/admin.py:29 books/models.py:36
+#: books/admin.py:29 books/models.py:37
 msgid "author"
 msgstr ""
 
@@ -58,163 +58,163 @@ msgstr ""
 msgid "Enter the name of publisher"
 msgstr ""
 
-#: books/models.py:11
+#: books/models.py:12
 msgid "Код"
 msgstr "Code"
 
-#: books/models.py:12 books/models.py:72
+#: books/models.py:13 books/models.py:73
 msgid "Название"
 msgstr "Title"
 
-#: books/models.py:16
+#: books/models.py:17
 msgid "Language"
 msgstr ""
 
-#: books/models.py:17
+#: books/models.py:18
 msgid "Languages"
 msgstr ""
 
-#: books/models.py:24 books/models.py:111
+#: books/models.py:25 books/models.py:114
 msgid "publisher"
 msgstr ""
 
-#: books/models.py:25
+#: books/models.py:26
 msgid "address"
 msgstr ""
 
-#: books/models.py:28
+#: books/models.py:29
 msgid "Publisher"
 msgstr ""
 
-#: books/models.py:29
+#: books/models.py:30
 msgid "Publishers"
 msgstr ""
 
-#: books/models.py:37 books/models.py:61 books/models.py:85
+#: books/models.py:38 books/models.py:62 books/models.py:86
 msgid "description"
 msgstr ""
 
-#: books/models.py:38
+#: books/models.py:39
 msgid "author's photo"
 msgstr ""
 
-#: books/models.py:41
+#: books/models.py:42
 msgid "Author"
 msgstr ""
 
-#: books/models.py:42
+#: books/models.py:43
 msgid "Authors"
 msgstr ""
 
-#: books/models.py:49
+#: books/models.py:50
 msgid "genre"
 msgstr ""
 
-#: books/models.py:52
+#: books/models.py:53
 msgid "Genre"
 msgstr ""
 
-#: books/models.py:53
+#: books/models.py:54
 msgid "Genres"
 msgstr ""
 
-#: books/models.py:60
+#: books/models.py:61
 msgid "category"
 msgstr ""
 
-#: books/models.py:64
+#: books/models.py:65
 msgid "Category"
 msgstr ""
 
-#: books/models.py:65
+#: books/models.py:66
 msgid "Categories"
 msgstr ""
 
-#: books/models.py:73 books/templates/books/item_detail.html:9
+#: books/models.py:74 books/templates/books/item_detail.html:9
 msgid "Описание"
 msgstr "Description"
 
-#: books/models.py:76
+#: books/models.py:77
 msgid "brand"
 msgstr ""
 
-#: books/models.py:77
+#: books/models.py:78
 msgid "brands"
 msgstr ""
 
-#: books/models.py:84
+#: books/models.py:85
 msgid "title"
 msgstr ""
 
-#: books/models.py:87
+#: books/models.py:88
 msgid "count available"
 msgstr ""
 
-#: books/models.py:88
+#: books/models.py:89
 msgid "price"
 msgstr ""
 
-#: books/models.py:89
+#: books/models.py:90
 msgid "photo"
 msgstr ""
 
-#: books/models.py:90
+#: books/models.py:91
 msgid "URL"
 msgstr ""
 
-#: books/models.py:93
+#: books/models.py:96
 msgid "Item"
 msgstr ""
 
-#: books/models.py:94
+#: books/models.py:97
 msgid "Items"
 msgstr ""
 
-#: books/models.py:110 books/models.py:126
+#: books/models.py:113 books/models.py:129
 msgid "language"
 msgstr ""
 
-#: books/models.py:112
+#: books/models.py:115
 msgid "year"
 msgstr ""
 
-#: books/models.py:115
+#: books/models.py:118
 msgid "Book"
 msgstr ""
 
-#: books/models.py:116
+#: books/models.py:119
 msgid "Books"
 msgstr ""
 
-#: books/models.py:124
+#: books/models.py:127
 msgid "date"
 msgstr ""
 
-#: books/models.py:125
+#: books/models.py:128
 msgid "magazine number"
 msgstr ""
 
-#: books/models.py:129
+#: books/models.py:132
 msgid "magazine"
 msgstr ""
 
-#: books/models.py:130
+#: books/models.py:133
 msgid "magazines"
 msgstr ""
 
-#: books/models.py:137 books/templates/books/item_detail.html:24
+#: books/models.py:140 books/templates/books/item_detail.html:24
 msgid "Персонаж"
 msgstr "Character"
 
-#: books/models.py:139
+#: books/models.py:142
 msgid "Название модели"
 msgstr "Model"
 
-#: books/models.py:142
+#: books/models.py:145
 msgid "figure"
 msgstr ""
 
-#: books/models.py:143
+#: books/models.py:146
 msgid "figures"
 msgstr ""
 
@@ -305,11 +305,11 @@ msgstr ""
 msgid "There are no type present."
 msgstr ""
 
-#: books/views.py:23
+#: books/views.py:25
 msgid "Книжный магазин"
 msgstr "Book store"
 
-#: books/views.py:63
+#: books/views.py:65
 #, python-format
 msgid "No %(verbose_name)s found matching the query"
 msgstr ""

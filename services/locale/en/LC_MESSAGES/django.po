@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-31 12:21+0300\n"
+"POT-Creation-Date: 2022-02-01 09:28+0300\n"
 "PO-Revision-Date: 2022-01-31 11:47+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -181,17 +181,36 @@ msgstr "Payment"
 msgid "Корзина пуста"
 msgstr "Cart is empty"
 
+#: services/templates/services/email_add_to_cart.html:4
 #: services/templates/services/email_payment_done.html:4
 msgid "Hi"
 msgstr ""
 
-#: services/templates/services/email_payment_done.html:6
-msgid "You paid the order"
+#: services/templates/services/email_add_to_cart.html:6
+msgid "You add item"
 msgstr ""
 
+#: services/templates/services/email_add_to_cart.html:6
+msgid "to cart"
+msgstr ""
+
+#: services/templates/services/email_add_to_cart.html:7
 #: services/templates/services/email_payment_done.html:9
 #: services/templates/services/email_payment_done.html:16
 msgid "Price"
+msgstr ""
+
+#: services/templates/services/email_add_to_cart.html:8
+msgid "Now you can paid your order:"
+msgstr ""
+
+#: services/templates/services/email_add_to_cart.html:9
+#: services/templates/services/email_payment_done.html:18
+msgid "Team"
+msgstr ""
+
+#: services/templates/services/email_payment_done.html:6
+msgid "You paid the order"
 msgstr ""
 
 #: services/templates/services/email_payment_done.html:15
@@ -247,14 +266,14 @@ msgstr "Wrong quantity"
 msgid "Товар %s добавлен в корзину"
 msgstr "Item %s added in cart"
 
-#: services/views.py:96
+#: services/views.py:97
 msgid "Товар отсутствует на складе в данный момент"
 msgstr "Product out of stock"
 
-#: services/views.py:108
+#: services/views.py:119
 msgid "Вы еще ничего не добавили в корзину"
 msgstr "You haven’t added anything to your cart yet"
 
-#: services/views.py:126
+#: services/views.py:137
 msgid "Заказ оплачен"
 msgstr "Order has been paid"
