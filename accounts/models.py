@@ -116,3 +116,11 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.email
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        old_currency = Profile.objects.get(pk=self.pk).currency
+        if old_currency != self.currency:
+            self.user.email_user(subject='Change values',
+                                 message=f'Currency = {self.currency}')
+        super(Profile, self).save()

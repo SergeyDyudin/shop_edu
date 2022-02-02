@@ -20,7 +20,7 @@ class ProfileChangeForm(forms.ModelForm):
         model = Profile
         fields = '__all__'
         widgets = {
-            'currency': forms.NumberInput(attrs={'readonly': True}),
+            'currency': forms.NumberInput(),
         }
 
 
