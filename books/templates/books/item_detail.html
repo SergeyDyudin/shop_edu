@@ -9,7 +9,7 @@
         <p>{% translate 'Описание' %}: {{ object.description|linebreaks }}</p>
         <p>{% translate 'Категории' %}: {{ object.category.all|join:", " }}</p>
         <p>{% translate 'Доступно для покупки' %}: {{ object.count_available }}</p>
-        <p>{% translate 'Фото' %}: {{ object.photo }}</p>
+        <p>{% translate 'Фото' %}: {% if item.photo %}<img src="{{ item.photo.url }}" width="10%" alt="photo">{% endif %}</p>
         {% if object.book %}
             <p>{% translate 'Автор' %}: {{ object.book.author.all|join:", " }}</p>
             <p>{% translate 'Жанр' %}: {{ object.book.genre.all|join:", " }}</p>
@@ -31,7 +31,7 @@
         <p><label for="quantity">{% translate 'Количество' %}: </label>
             <input type="number" value="1" id="quantity" name="quantity" min="1">
             <input type="submit" formaction="{% url 'services:purchase' object.pk %}" formmethod="post"
-                  value="{% translate 'Купить' %}" name="_purchase">
+                   value="{% translate 'Купить' %}" name="_purchase">
             <input type="submit" value="{% translate 'Взять на прокат' %}" name="_rent"></p>
     </form>
 {% endblock %}

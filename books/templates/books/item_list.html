@@ -1,5 +1,5 @@
 {% extends "root_site.html" %}
-{% load i18n %}
+{% load static i18n %}
 
 {% block breadcrumbs %}
     <div class="breadcrumbs">
@@ -11,6 +11,9 @@
 {% block main-content %}
     {% for item in item_list %}
         <h2>{{ item.title }}</h2>
+        {% if item.photo %}
+            <img src="{{ item.photo.url }}" width="10%" alt="photo">
+        {% endif %}
         <p>{{ item.description|truncatewords:30|linebreaks }}</p>
         <p>{% translate 'Цена' %} - {{ item.price }}</p>
         <p>{% translate 'Категории' %}:
