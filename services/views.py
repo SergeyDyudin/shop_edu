@@ -1,4 +1,5 @@
 import datetime
+import logging
 from http.client import HTTPResponse
 
 from django.contrib import messages
@@ -18,6 +19,9 @@ from accounts.models import CustomUser
 from books.models import Item
 from services.forms import RentForm
 from services.models import Rent, Purchase, Invoice
+
+
+logger = logging.getLogger('book_store')
 
 
 class PurchaseView(LoginRequiredMixin, SuccessMessageMixin, View):
@@ -152,6 +156,7 @@ class CartView(LoginRequiredMixin, View):
         invoice.status = 'Оплачен'
         invoice.save()
         messages.info(request, _('Заказ оплачен'))
+        logger.info(f'Invoice {invoice} paid.')
         self.email_payment_done(request, invoice)
         return redirect('books:home')
 

@@ -170,3 +170,45 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
 DATE_FORMAT = 'j N, Y'
 
 PASSWORD_RESET_TIMEOUT = 86400
+
+LOGGING = {
+    'version': 1,
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'console': {
+            'format': '%(levelname)s %(asctime)s %(module)s: %(message)s',
+        },
+        'file': {
+            'format': '%(levelname)s %(asctime)s %(module)s: %(message)s',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR/'logs/debug.log',
+            'formatter': 'file',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        }
+    },
+    'loggers': {
+        'book_store': {
+            'level': 'DEBUG',
+            'handlers': ['file', 'mail_admins', 'console'],
+            'propagate': True,
+        },
+    }
+}

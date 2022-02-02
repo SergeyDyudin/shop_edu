@@ -181,6 +181,7 @@ class RegistrationView(View):
 
     @transaction.atomic
     def post(self, request):
+        # TODO: @transaction.atomic() и разбить на несколько функций?
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
