@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
@@ -18,6 +20,9 @@ from django.utils.translation import gettext_lazy as _
 from accounts.forms import SendEmailForm, LoginForm, ProfileChangeForm, RegistrationForm, AccountForm
 from accounts.models import CustomUser, Profile, Region
 from accounts.tokens import account_activation_token
+
+
+logger = logging.getLogger(__name__)
 
 
 class SendEmailView(SuccessMessageMixin, PermissionRequiredMixin, FormView):
@@ -47,6 +52,7 @@ class SendEmailView(SuccessMessageMixin, PermissionRequiredMixin, FormView):
         form = self.get_form()
         if form.is_valid():
             obj.email_user(subject=form.cleaned_data['subject'], message=form.cleaned_data['body'])
+            logger.info(f'Email sent {request.user.email}')
             return self.form_valid(form)
         return self.form_invalid(form)
 
@@ -156,6 +162,7 @@ class LoginView(View):
 
             if user is not None and user.is_active:
                 login(request, user)
+                logger.info(f'User {user} is login')
                 # return HttpResponseRedirect(reverse('home'))
                 redirect_to = request.GET.get('next', reverse('accounts:account', kwargs={'pk': user.id}))
                 return HttpResponseRedirect(redirect_to)
@@ -166,6 +173,7 @@ class LoginView(View):
 class LogoutView(View):
     def get(self, request):
         logout(request)
+        logger.info(f'User {request.user} is logout')
         return HttpResponseRedirect(reverse('books:home'))
 
 
@@ -181,7 +189,6 @@ class RegistrationView(View):
 
     @transaction.atomic
     def post(self, request):
-        # TODO: @transaction.atomic() и разбить на несколько функций?
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
@@ -196,18 +203,22 @@ class RegistrationView(View):
             user.profile.birthday = form.cleaned_data.get('birthday')
             user.profile.phone = form.cleaned_data.get('phone')
             user.save()
-            current_site = get_current_site(request)
-            subject = 'Activate Your MySite Account'
-            message = render_to_string('accounts/account_activation_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-            })
-            user.email_user(subject, message)
+            self.send_avtivation_email(request, user)
             return redirect('accounts:account_activation_sent')
         else:
             return render(request, 'accounts/account_activation_invalid.html')
+
+    def send_avtivation_email(self, request, user):
+        current_site = get_current_site(request)
+        subject = 'Activate Your MySite Account'
+        message = render_to_string('accounts/account_activation_email.html', {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': account_activation_token.make_token(user),
+        })
+        user.email_user(subject, message)
+        logger.info(f'Sent activation email to {user.email}')
 
 
 def account_activation_sent(request):
@@ -220,11 +231,13 @@ def activate_user(request, uidb64, token):
         user = CustomUser.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
         user = None
+        logger.error(f'Invalid uid user for activation')
 
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.profile.email_confirmed = True
         user.save()
+        logger.info(f'Activate user {user}')
         login(request, user)
         return redirect('books:home')
     else:

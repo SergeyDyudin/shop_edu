@@ -1,0 +1,12 @@
+INFO 2022-02-02 13:51:15,031 views: Loading cart page.
+INFO 2022-02-02 13:51:20,235 views: Loading cart page.
+INFO 2022-02-02 13:52:18,021 views: Loading cart page.
+INFO 2022-02-02 14:16:15,746 views: Loading cart page.
+INFO 2022-02-02 14:24:49,429 views: Loading cart page.
+INFO 2022-02-02 14:27:17,482 views: Loading cart page.
+INFO 2022-02-02 14:27:39,940 views: Loading cart page.
+services.views [INFO] [2022-02-02 14:28:39,096] views: Loading cart page.
+[INFO] [2022-02-02 14:29:18,680] services.views: Loading cart page.
+[INFO] [2022-02-02 14:30:34,317] services.views: Loading cart page.
+[INFO] [2022-02-02 14:32:07,769] services.views:get: Loading cart page.
+[INFO] [2022-02-02 14:48:15,729] services.views:post: Invoice [83] sergeydyudin@yandex.ru paid.

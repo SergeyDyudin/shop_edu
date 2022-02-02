@@ -21,7 +21,7 @@ from services.forms import RentForm
 from services.models import Rent, Purchase, Invoice
 
 
-logger = logging.getLogger('book_store')
+logger = logging.getLogger(__name__)
 
 
 class PurchaseView(LoginRequiredMixin, SuccessMessageMixin, View):

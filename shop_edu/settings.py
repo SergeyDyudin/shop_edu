@@ -177,6 +177,7 @@ PASSWORD_RESET_TIMEOUT = 86400
 
 LOGGING = {
     'version': 1,
+    'disable_existing_loggers': False,
     'filters': {
         'require_debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
@@ -184,10 +185,12 @@ LOGGING = {
     },
     'formatters': {
         'console': {
-            'format': '%(levelname)s %(asctime)s %(module)s: %(message)s',
+            'format': '[{levelname}] [{asctime}] {name}:{funcName}: {message}',
+            'style': '{',
         },
         'file': {
-            'format': '%(levelname)s %(asctime)s %(module)s: %(message)s',
+            'format': '[{levelname}] [{asctime}] {name}:{funcName}: {message}',
+            'style': '{',
         }
     },
     'handlers': {
@@ -209,10 +212,22 @@ LOGGING = {
         }
     },
     'loggers': {
-        'book_store': {
+        # 'book_store': {
+        #     'level': 'DEBUG',
+        #     'handlers': ['console', 'file', 'mail_admins'],
+        #     'propagate': True,
+        # },
+        'accounts': {
             'level': 'DEBUG',
-            'handlers': ['file', 'mail_admins', 'console'],
-            'propagate': True,
+            'handlers': ['console', 'file', 'mail_admins'],
+        },
+        'books': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file', 'mail_admins'],
+        },
+        'services': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file', 'mail_admins'],
         },
     }
 }
