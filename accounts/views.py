@@ -3,6 +3,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.sites.shortcuts import get_current_site
+from django.db import transaction
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -178,6 +179,7 @@ class RegistrationView(View):
         })
         return render(request, 'accounts/registration.html', context)
 
+    @transaction.atomic
     def post(self, request):
         form = RegistrationForm(request.POST)
         if form.is_valid():

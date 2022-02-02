@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.sites.shortcuts import get_current_site
+from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -27,6 +28,7 @@ class PurchaseView(LoginRequiredMixin, SuccessMessageMixin, View):
     def get(self, request, **kwargs):
         return redirect('books:item', Item.objects.get(pk=kwargs['pk']).slug)
 
+    @transaction.atomic
     def post(self, request, **kwargs):
         item = Item.objects.get(pk=kwargs['pk'])
         quantity = int(request.POST['quantity'])
@@ -76,6 +78,7 @@ class RentView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         # return super(RentView, self).get(request, *args, **kwargs)
         return self.render_to_response(self.get_context_data(**kwargs))
 
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         data = {
             'item': Item.objects.get(pk=self.request.POST['item'].split()[0]),
@@ -141,6 +144,7 @@ class CartView(LoginRequiredMixin, View):
         }
         return render(request, 'services/cart.html', context)
 
+    @transaction.atomic
     def post(self, request):
         invoice = Invoice.objects.get(
             user_id=request.user.id,
