@@ -13,10 +13,9 @@ class ItemsListView(ListView):
     ]
 
     def get(self, request, *args, **kwargs):
-        if self.request.GET.get('search_item', False):
-            self.queryset = Item.objects.adult_control(self.request.user).\
-                filter(title__icontains=self.request.GET['search_item'])
         self.queryset = Item.objects.adult_control(self.request.user)
+        if self.request.GET.get('search_item', False):
+            self.queryset = self.queryset.filter(title__icontains=self.request.GET['search_item'])
         return super(ItemsListView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):

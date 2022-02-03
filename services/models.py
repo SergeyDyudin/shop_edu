@@ -55,6 +55,16 @@ class Invoice(models.Model):
             total += obj.price
         return total
 
+    def get_final_price_and_currency(self):
+        """
+        Evaluate final_price = price - currency and new_currency
+        :return: (final_price, new_currency)
+        """
+        final_price = self.price_total - self.user_id.profile.currency
+        if final_price >= 0:
+            return final_price, 0
+        return 0, final_price*(-1)
+
 
 class Service(models.Model):
     item = models.ForeignKey(to=Item, on_delete=models.CASCADE, verbose_name=_('item'))

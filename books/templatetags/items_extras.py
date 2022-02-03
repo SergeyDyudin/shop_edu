@@ -7,8 +7,8 @@ register = template.Library()
 
 
 @register.inclusion_tag('books/categories.html')
-def list_category():
-    return {'cats': Category.objects.all()}
+def list_category(user):
+    return {'cats': Category.objects.adult_control(user).all()}
 
 
 @register.inclusion_tag('books/types.html')

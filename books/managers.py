@@ -1,9 +1,28 @@
 from django.db import models
 
+from shop_edu.settings import ADULT_CATEGORIES
 
-class AdultFiltered(models.Manager):
+
+class ControlAdultMixin:
+
+    @staticmethod
+    def user_is_adult(user):
+        return True if hasattr(user, 'profile') and user.profile.is_adult() else False
+
+
+class AdultFilteredItems(ControlAdultMixin, models.Manager):
 
     def adult_control(self, user):
-        if hasattr(user, 'profile') and user.profile.age >= 18:
-            return super(AdultFiltered, self).get_queryset()
-        return super(AdultFiltered, self).get_queryset().exclude(category__name='18+')
+        result = super(AdultFilteredItems, self).get_queryset()
+        if self.user_is_adult(user):
+            return result
+        return result.exclude(category__name__in=ADULT_CATEGORIES)
+
+
+class AdultFilteredCategory(ControlAdultMixin, models.Manager):
+
+    def adult_control(self, user):
+        result = super(AdultFilteredCategory, self).get_queryset()
+        if self.user_is_adult(user):
+            return result
+        return result.exclude(name__in=ADULT_CATEGORIES)

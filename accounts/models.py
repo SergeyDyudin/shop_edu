@@ -1,4 +1,6 @@
 import csv
+import logging
+from smtplib import SMTPDataError
 
 from django.contrib import admin
 from django.contrib.auth.base_user import AbstractBaseUser
@@ -12,6 +14,8 @@ from django.utils.translation import gettext_lazy as _
 
 from accounts.managers import CustomUserManager
 from utils.validators import validate_phone
+
+logger = logging.getLogger(__name__)
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -121,6 +125,12 @@ class Profile(models.Model):
              update_fields=None):
         old_currency = Profile.objects.get(pk=self.pk).currency
         if old_currency != self.currency:
-            self.user.email_user(subject='Change values',
-                                 message=f'Currency = {self.currency}')
-        super(Profile, self).save()
+            try:
+                self.user.email_user(subject='Change values',
+                                     message=f'Currency = {self.currency}')
+            except SMTPDataError:
+                logger.error('Сообщение не было отправлено', exc_info=True)
+            super(Profile, self).save()
+
+    def is_adult(self):
+        return True if self.age >= 18 else False

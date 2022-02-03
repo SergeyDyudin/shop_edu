@@ -1,6 +1,7 @@
 import datetime
 import logging
 from http.client import HTTPResponse
+from smtplib import SMTPDataError
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -45,7 +46,10 @@ class PurchaseView(LoginRequiredMixin, SuccessMessageMixin, View):
             item.count_available -= quantity
             item.save()
             messages.success(self.request, self.success_message % (item, quantity))
-            self.email_add_rent(request, {'item': item})
+            try:
+                self.email_add_rent(request, {'item': item})
+            except SMTPDataError:
+                logger.error('Сообщение не было отправлено', exc_info=True)
             return redirect('services:cart')
         messages.error(self.request, _('Неверное количество товара'))
         return redirect(request.META['HTTP_REFERER'])
@@ -138,11 +142,6 @@ class CartView(LoginRequiredMixin, View):
         except Invoice.DoesNotExist:
             messages.warning(request, _('Вы еще ничего не добавили в корзину'))
             invoice = None
-            # if request.META.get('HTTP_REFERER', False):
-            #     if request.META['HTTP_REFERER'] == request.build_absolute_uri():
-            #         return redirect('books:home')
-            #     return redirect(request.META['HTTP_REFERER'])
-            # return redirect('books:home')
         context = {
             'invoice': invoice
         }
@@ -154,6 +153,9 @@ class CartView(LoginRequiredMixin, View):
             user_id=request.user.id,
             status='Ожидает оплаты')
         invoice.status = 'Оплачен'
+        final_price, new_currency = invoice.get_final_price_and_currency()
+        invoice.user_id.profile.currency = new_currency
+        invoice.user_id.profile.save()
         invoice.save()
         messages.info(request, _('Заказ оплачен'))
         logger.info(f'Invoice {invoice} paid.')
@@ -168,7 +170,10 @@ class CartView(LoginRequiredMixin, View):
             'invoice': invoice,
             'current_site': current_site,
         })
-        request.user.email_user(subject, message)
+        try:
+            request.user.email_user(subject, message)
+        except SMTPDataError:
+            logger.error('Сообщение не было отправлено', exc_info=True)
 
 
 def delete_service(request, **kwargs):

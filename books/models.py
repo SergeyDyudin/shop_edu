@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from books.managers import AdultFiltered
+from books.managers import AdultFilteredItems, AdultFilteredCategory
 from utils.utils import transliterate_string
 
 
@@ -61,6 +61,8 @@ class Category(models.Model):
     name = models.CharField(_('category'), max_length=50, blank=True, unique=True)
     description = models.TextField(_('description'), blank=True)
 
+    objects = AdultFilteredCategory()
+
     class Meta:
         verbose_name = _('Category')
         verbose_name_plural = _('Categories')
@@ -90,7 +92,7 @@ class Item(models.Model):
     photo = models.ImageField(verbose_name=_('photo'), upload_to='items/photo/', blank=True, null=True)
     slug = models.SlugField(_('URL'), unique=True, blank=False)
 
-    objects = AdultFiltered()
+    objects = AdultFilteredItems()
 
     class Meta:
         verbose_name = _('Item')

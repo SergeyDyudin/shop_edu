@@ -231,3 +231,7 @@ LOGGING = {
         },
     }
 }
+
+ADULT_CATEGORIES = [
+    '18+',
+]
