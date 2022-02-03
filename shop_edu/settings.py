@@ -232,6 +232,6 @@ LOGGING = {
     }
 }
 
-ADULT_CATEGORIES = [
-    '18+',
-]
+ADULT_CATEGORIES = [cat.strip() for cat in os.getenv('ADULT_CATEGORIES', default='18+').split(',')]
+
+MAX_DISCOUNT = float(os.getenv('MAX_DISCOUNT', default=0.3))

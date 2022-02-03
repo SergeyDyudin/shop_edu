@@ -25,9 +25,6 @@ class ProfileChangeForm(forms.ModelForm):
 
 
 class AccountForm(forms.ModelForm):
-    # region_choices = list(Region.objects.all())
-    # region_choices = zip(region_choices, region_choices)
-    # region = forms.CharField(widget=forms.Select(choices=region_choices), required=False)
     region = forms.ModelChoiceField(label=_('Регион'), queryset=Region.objects.all(), widget=forms.Select(), required=False)
     phone = forms.CharField(label=_('Телефон'), max_length=80, validators=[validate_phone], required=False)
     birthday = forms.DateField(label=_('День рождения'), widget=forms.SelectDateWidget(), required=False)

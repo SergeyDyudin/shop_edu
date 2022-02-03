@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from accounts.models import CustomUser
 from books.models import Item
+from shop_edu import settings
 
 
 class Invoice(models.Model):
@@ -60,10 +61,12 @@ class Invoice(models.Model):
         Evaluate final_price = price - currency and new_currency
         :return: (final_price, new_currency)
         """
-        final_price = self.price_total - self.user_id.profile.currency
-        if final_price >= 0:
-            return final_price, 0
-        return 0, final_price*(-1)
+        max_discount = self.price_total*settings.MAX_DISCOUNT
+        bound_price = self.price_total - max_discount
+        diff = max_discount - self.user_id.profile.currency
+        if diff >= 0:
+            return bound_price + diff, 0
+        return bound_price, diff*(-1)
 
 
 class Service(models.Model):
