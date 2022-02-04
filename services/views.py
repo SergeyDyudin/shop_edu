@@ -1,6 +1,5 @@
 import datetime
 import logging
-from http.client import HTTPResponse
 from smtplib import SMTPDataError
 
 from django.contrib import messages
@@ -12,7 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.views import View
-from django.views.generic import DetailView, CreateView, FormView, ListView
+from django.views.generic import FormView, ListView
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse, reverse_lazy
 
@@ -115,7 +114,10 @@ class RentView(LoginRequiredMixin, SuccessMessageMixin, FormView):
                 item.count_available -= 1
                 item.save()
                 messages.success(self.request, self.success_message % item.title)
-                self.email_add_rent(request, form.cleaned_data)
+                try:
+                    self.email_add_rent(request, form.cleaned_data)
+                except SMTPDataError:
+                    logger.error('Сообщение не было отправлено', exc_info=True)
                 return redirect('services:cart')
             messages.error(self.request, _('Товар отсутствует на складе в данный момент'))
             return redirect(request.META['HTTP_REFERER'])
@@ -154,8 +156,8 @@ class CartView(LoginRequiredMixin, View):
             status='Ожидает оплаты')
         invoice.status = 'Оплачен'
         final_price, new_currency = invoice.get_final_price_and_currency()
-        invoice.user_id.profile.currency = new_currency
-        invoice.user_id.profile.save()
+        invoice.user_profile.currency = new_currency
+        invoice.user_profile.save()
         invoice.save()
         messages.info(request, _('Заказ оплачен'))
         logger.info(f'Invoice {invoice} paid.')

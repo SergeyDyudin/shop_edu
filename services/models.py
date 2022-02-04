@@ -68,6 +68,10 @@ class Invoice(models.Model):
             return bound_price + diff, 0
         return bound_price, diff*(-1)
 
+    @property
+    def user_profile(self):
+        return self.user_id.profile
+
 
 class Service(models.Model):
     item = models.ForeignKey(to=Item, on_delete=models.CASCADE, verbose_name=_('item'))
