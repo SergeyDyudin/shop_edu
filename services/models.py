@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from accounts.models import CustomUser
 from books.models import Item
+from services.managers import InvoiceManager, RentManager, ServiceManager
 from shop_edu import settings
 
 
@@ -35,6 +36,8 @@ class Invoice(models.Model):
         _('status updated'),
         default=timezone.now
     )
+
+    objects = InvoiceManager()
 
     class Meta:
         verbose_name = _('invoice')
@@ -80,6 +83,8 @@ class Service(models.Model):
 
     path_template = 'services/item_service.html'
 
+    objects = ServiceManager()
+
     class Meta:
         abstract = True
 
@@ -88,6 +93,8 @@ class Service(models.Model):
 
     @property
     def price(self):
+        if hasattr(self, '_price'):
+            return self._price
         return self.item.price * self.quantity
 
     def delete(self, using=None, keep_parents=False):
@@ -107,8 +114,8 @@ class Purchase(Service):
 
 
 class Rent(Service):
-    date_from = models.DateField(_('Date from'), default=timezone.now)
-    date_to = models.DateField(_('Date to'))
+    date_from = models.DateField(_('Date from'), null=False, default=timezone.now)
+    date_to = models.DateField(_('Date to'), null=False, default=timezone.now)
     daily_payment = models.PositiveSmallIntegerField(
         _('daily payment'),
         default=50,
@@ -116,6 +123,8 @@ class Rent(Service):
         blank=False,
         null=False
     )
+
+    objects = RentManager()
 
     path_template = 'services/item_rent.html'
 
@@ -125,6 +134,8 @@ class Rent(Service):
 
     @property
     def price(self):
+        if hasattr(self, '_price'):
+            return self._price
         if not (self.date_to and self.date_from):
             raise ValueError('Date_to or date_from are not specified')
         return self.quantity * ((self.date_to - self.date_from).days + 1) * self.daily_payment
