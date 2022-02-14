@@ -6,18 +6,7 @@
 
 {% block main-content %}
     <h1><b>{% translate 'Покупки' %}: </b></h1>
-    {% for purchase in object_list %}
-        <h2>{% translate 'Название' %}: {{ purchase.item.title }}</h2>
-        <p>{% translate 'Количество' %}: {{ purchase.quantity }}</p>
-        <p>{% translate 'Цена' %}:{{ purchase.price }}</p>
-        <p>{% translate 'Статус' %}: <b>{{ purchase.invoice.status }}</b></p>
-    {% endfor %}
-    <h1><b>{% translate 'Аренда' %}: </b></h1>
-    {% for rent in rents %}
-        <h2>{% translate 'Название' %}: {{ rent.item.title }}</h2>
-        <p>{% translate 'С' %}: {{ rent.date_from }}</p>
-        <p>{% translate 'По' %}: {{ rent.date_to }}</p>
-        <p>{% translate 'Цена' %}: {{ rent.price }}</p>
-        <p>{% translate 'Статус' %}: <b>{{ rent.invoice.status }}</b></p>
+    {% for service in service_list %}
+        {% include service.path_template %}
     {% endfor %}
 {% endblock %}

@@ -78,6 +78,8 @@ class Service(models.Model):
     invoice = models.ForeignKey(to=Invoice, on_delete=models.CASCADE, verbose_name=_('invoice'))
     quantity = models.PositiveSmallIntegerField(_('quantity'), default=1, blank=False)
 
+    path_template = 'services/item_service.html'
+
     class Meta:
         abstract = True
 
@@ -114,6 +116,8 @@ class Rent(Service):
         blank=False,
         null=False
     )
+
+    path_template = 'services/item_rent.html'
 
     class Meta:
         verbose_name = _('rent')

@@ -108,6 +108,18 @@ class Item(models.Model):
     def get_absolute_url(self):
         return reverse('books:item', kwargs={'slug': self.slug})
 
+    @property
+    def path_template_ext(self):
+        children = self.get_children_list()
+        for child in children:
+            if hasattr(self, child):
+                return f'books/detail/{child.lower()}.html'
+        return 'books/detail/item.html'
+
+    @classmethod
+    def get_children_list(cls):
+        return [child.__name__.lower() for child in cls.__subclasses__()]
+
 
 class Book(Item):
     author = models.ManyToManyField(to=Author)

@@ -1,5 +1,6 @@
 import datetime
 import logging
+from itertools import chain
 from smtplib import SMTPDataError
 
 from django.contrib import messages
@@ -7,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.sites.shortcuts import get_current_site
 from django.db import transaction
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -18,10 +20,14 @@ from django.urls import reverse, reverse_lazy
 from accounts.models import CustomUser
 from books.models import Item
 from services.forms import RentForm
-from services.models import Rent, Purchase, Invoice
-
+from services.models import Rent, Purchase, Invoice, Service
 
 logger = logging.getLogger(__name__)
+
+MAPPING_SERVICES_TO_MODELS = {
+        'purchase': Purchase,
+        'rent': Rent,
+    }
 
 
 class PurchaseView(LoginRequiredMixin, SuccessMessageMixin, View):
@@ -181,19 +187,23 @@ class CartView(LoginRequiredMixin, View):
 def delete_service(request, **kwargs):
     service_id = kwargs['pk']
     service_type = kwargs['service']
-    if service_type == 'purchase':
-        Purchase.objects.get(id=service_id).delete()
-    elif service_type == 'rent':
-        Rent.objects.get(id=service_id).delete()
+    model = MAPPING_SERVICES_TO_MODELS.get(service_type)
+    if model is None:
+        raise Http404("Service doesn't exist")
+    model.objects.get(id=service_id).delete()
     return redirect('services:cart')
 
 
 class HistoryListView(ListView):
-    model = Purchase
     template_name = 'services/history.html'
+    context_object_name = 'service_list'
 
-    def get_context_data(self, **kwargs):
-        object_list = Purchase.objects.filter(invoice__user_id=self.request.user.id).exclude(invoice__status='Отменен')
-        context = super().get_context_data(object_list=object_list, **kwargs)
-        context['rents'] = Rent.objects.filter(invoice__user_id=self.request.user.id).exclude(invoice__status='Отменен')
-        return context
+    def get_queryset(self):
+        qs_list = [
+            service.objects.filter(invoice__user_id=self.request.user.id).exclude(
+                invoice__status=Invoice.InvoiceStatuses.CANCELED.value
+            )
+            for service in MAPPING_SERVICES_TO_MODELS.values()
+        ]
+        return sorted(chain(*qs_list), key=lambda service: service.invoice.date_created, reverse=True)
+

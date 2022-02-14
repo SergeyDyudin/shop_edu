@@ -32,7 +32,8 @@ class ItemDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'title': self.object
+            'title': self.object,
+            'item_detail': self.object.path_template_ext
         })
         return context
 
@@ -59,7 +60,7 @@ class ItemDetailView(DetailView):
             )
 
         try:
-            obj = queryset.prefetch_related().get()
+            obj = queryset.select_related(*self.model.get_children_list()).get()
         except queryset.model.DoesNotExist:
             raise Http404(_("No %(verbose_name)s found matching the query") %
                           {'verbose_name': queryset.model._meta.verbose_name})
