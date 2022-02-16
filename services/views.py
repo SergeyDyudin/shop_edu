@@ -45,7 +45,7 @@ class PurchaseView(LoginRequiredMixin, SuccessMessageMixin, View):
         if item.count_available >= quantity:
             invoice, created = Invoice.objects.get_or_create(
                 user_id=CustomUser.objects.get(pk=request.user.id),
-                status='Ожидает оплаты'
+                status=Invoice.InvoiceStatuses.UNPAID.value
             )
             Purchase(item=item, invoice=invoice, quantity=quantity).save()
             item.count_available -= quantity
@@ -109,7 +109,7 @@ class RentView(LoginRequiredMixin, SuccessMessageMixin, FormView):
             if item.count_available >= 1:
                 invoice, created = Invoice.objects.get_or_create(
                     user_id=CustomUser.objects.get(pk=request.user.id),
-                    status='Ожидает оплаты'
+                    status=Invoice.InvoiceStatuses.UNPAID.value
                 )
                 Rent(item=item,
                      invoice=invoice,
@@ -146,7 +146,7 @@ class CartView(LoginRequiredMixin, View):
         try:
             invoice = Invoice.objects.get(
                 user_id=request.user.id,
-                status='Ожидает оплаты')
+                status=Invoice.InvoiceStatuses.UNPAID.value)
         except Invoice.DoesNotExist:
             messages.warning(request, _('Вы еще ничего не добавили в корзину'))
             invoice = None
@@ -159,8 +159,8 @@ class CartView(LoginRequiredMixin, View):
     def post(self, request):
         invoice = Invoice.objects.get(
             user_id=request.user.id,
-            status='Ожидает оплаты')
-        invoice.status = 'Оплачен'
+            status=Invoice.InvoiceStatuses.UNPAID.value)
+        invoice.status = Invoice.InvoiceStatuses.PAID.value
         final_price, new_currency = invoice.get_final_price_and_currency()
         invoice.user_profile.currency = new_currency
         invoice.user_profile.save()

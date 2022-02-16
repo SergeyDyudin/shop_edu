@@ -7,9 +7,9 @@ from django.dispatch import receiver
 def create_profile(sender, instance, created, **kwargs):
     if created and not hasattr(instance, 'profile'):
         Profile.objects.create(user=instance)
-        instance.profile.save()
+        # instance.profile.save()
 
 
-# @receiver(post_save, sender=CustomUser)
-# def save_user_profile(sender, instance, **kwargs):
-#     instance.profile.save()
+@receiver(post_save, sender=CustomUser)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

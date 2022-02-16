@@ -123,14 +123,17 @@ class Profile(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        old_currency = Profile.objects.get(pk=self.pk).currency
-        if old_currency != self.currency:
-            try:
-                self.user.email_user(subject='Change values',
-                                     message=f'Currency = {self.currency}')
-            except SMTPDataError:
-                logger.error('Сообщение не было отправлено', exc_info=True)
-            super(Profile, self).save()
+        try:
+            old_currency = Profile.objects.get(pk=self.pk).currency
+            if old_currency != self.currency:
+                try:
+                    self.user.email_user(subject='Change values',
+                                         message=f'Currency = {self.currency}')
+                except SMTPDataError:
+                    logger.error('Сообщение не было отправлено', exc_info=True)
+        except Profile.DoesNotExist:
+            pass
+        super(Profile, self).save()
 
     def is_adult(self):
         return True if self.age >= 18 else False

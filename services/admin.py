@@ -17,6 +17,10 @@ class PurchaseInlineAdmin(admin.StackedInline):
         'price'
     ]
 
+    @admin.display(description=_('Price'))
+    def price(self, obj):
+        return obj.price
+
 
 class RentInlineAdmin(admin.StackedInline):
     model = Rent
@@ -29,6 +33,10 @@ class RentInlineAdmin(admin.StackedInline):
     readonly_fields = [
         'price'
     ]
+
+    @admin.display(description=_('Price'))
+    def price(self, obj):
+        return obj.price
 
 
 class InvoiceAdmin(admin.ModelAdmin):
@@ -64,14 +72,14 @@ class InvoiceAdmin(admin.ModelAdmin):
         if db_field.name == 'status':
             if not request.user.has_perm('can_change_status'):
                 choices = db_field.get_choices()
-                choices.remove(('Оплачен', _('Оплачен')))
+                choices.remove((1, _('Оплачен')))
                 choices.remove(('', '---------'))
                 kwargs['choices'] = choices
         return super().formfield_for_choice_field(db_field, request, **kwargs)
 
     @admin.action(description=_('Mark invoice status as CANCELED'))
     def make_canceled(self, request, queryset):
-        updated = queryset.update(status='Отменен')
+        updated = queryset.update(status=Invoice.InvoiceStatuses.CANCELED.value)
         self.message_user(
             request,
             ngettext(
@@ -104,6 +112,10 @@ class PurchaseAdmin(admin.ModelAdmin):
     def status_invoice(self, obj):
         return obj.invoice.status
 
+    @admin.display(description=_('Price'))
+    def price(self, obj):
+        return obj.price
+
 
 class RentAdmin(admin.ModelAdmin):
     readonly_fields = [
@@ -126,6 +138,10 @@ class RentAdmin(admin.ModelAdmin):
     @admin.display(description=_('Status'))
     def status_invoice(self, obj):
         return obj.invoice.status
+
+    @admin.display(description=_('Price'))
+    def price(self, obj):
+        return obj.price
 
 
 admin.site.register(Purchase, PurchaseAdmin)

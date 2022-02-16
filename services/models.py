@@ -11,18 +11,17 @@ from shop_edu import settings
 
 class Invoice(models.Model):
 
-    class InvoiceStatuses(models.TextChoices):
-        PAID = 'Оплачен', _('Оплачен')
-        UNPAID = 'Ожидает оплаты', _('Ожидает оплаты')
-        CANCELED = 'Отменен', _('Отменен')
+    class InvoiceStatuses(models.IntegerChoices):
+        PAID = 0, _('Оплачен')
+        UNPAID = 1, _('Ожидает оплаты')
+        CANCELED = 2, _('Отменен')
 
     user_id = models.ForeignKey(
         to=CustomUser,
         on_delete=models.CASCADE,
         verbose_name=_('user')
     )
-    status = models.CharField(
-        max_length=30,
+    status = models.PositiveSmallIntegerField(
         choices=InvoiceStatuses.choices,
         default=InvoiceStatuses.UNPAID,
         blank=False,
@@ -91,11 +90,11 @@ class Service(models.Model):
     def __str__(self):
         return f'[{self.invoice.status}]-{self.item.title}'
 
-    @property
-    def price(self):
-        if hasattr(self, '_price'):
-            return self._price
-        return self.item.price * self.quantity
+    # @property
+    # def price(self):
+    #     if hasattr(self, '_price'):
+    #         return self._price
+    #     return self.item.price * self.quantity
 
     def delete(self, using=None, keep_parents=False):
         self.item.count_available += self.quantity
@@ -132,10 +131,10 @@ class Rent(Service):
         verbose_name = _('rent')
         verbose_name_plural = _('rents')
 
-    @property
-    def price(self):
-        if hasattr(self, '_price'):
-            return self._price
-        if not (self.date_to and self.date_from):
-            raise ValueError('Date_to or date_from are not specified')
-        return self.quantity * ((self.date_to - self.date_from).days + 1) * self.daily_payment
+    # @property
+    # def price(self):
+    #     if hasattr(self, '_price'):
+    #         return self._price
+    #     if not (self.date_to and self.date_from):
+    #         raise ValueError('Date_to or date_from are not specified')
+    #     return self.quantity * ((self.date_to - self.date_from).days + 1) * self.daily_payment

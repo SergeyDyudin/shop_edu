@@ -94,6 +94,8 @@ class Item(models.Model):
 
     objects = AdultFilteredItems()
 
+    path_template = 'books/detail/item.html'
+
     class Meta:
         verbose_name = _('Item')
         verbose_name_plural = _('Items')
@@ -113,8 +115,8 @@ class Item(models.Model):
         children = self.get_children_list()
         for child in children:
             if hasattr(self, child):
-                return f'books/detail/{child.lower()}.html'
-        return 'books/detail/item.html'
+                return getattr(self, child).path_template
+        return self.path_template
 
     @classmethod
     def get_children_list(cls):
@@ -127,6 +129,8 @@ class Book(Item):
     language = models.ForeignKey(to=Language, on_delete=models.CASCADE, verbose_name=_('language'))
     publisher = models.ForeignKey(to=Publisher, on_delete=models.CASCADE, verbose_name=_('publisher'))
     year = models.DateField(verbose_name=_('year'))
+
+    path_template = 'books/detail/book.html'
 
     class Meta:
         verbose_name = _('Book')
@@ -142,6 +146,8 @@ class Magazine(Item):
     number = models.PositiveSmallIntegerField(_('magazine number'), blank=True, null=True)
     language = models.ForeignKey(to=Language, on_delete=models.CASCADE, verbose_name=_('language'))
 
+    path_template = 'books/detail/magazine.html'
+
     class Meta:
         verbose_name = _('magazine')
         verbose_name_plural = _('magazines')
@@ -154,6 +160,8 @@ class Figure(Item):
     character = models.CharField(_('Персонаж'), max_length=80, blank=True)
     brand = models.ForeignKey(to=Brand, on_delete=models.CASCADE)
     model_name = models.CharField(_('Название модели'), max_length=80, blank=True)
+
+    path_template = 'books/detail/figure.html'
 
     class Meta:
         verbose_name = _('figure')
