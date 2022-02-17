@@ -3,6 +3,32 @@
 from django.db import migrations, models
 import django.utils.timezone
 
+from django.db.models import Case, When, Value
+
+MAPPING_STATUSES = {
+    'Оплачен': 0,
+    'Ожидает оплаты': 1,
+    'Отменен': 2,
+}
+
+
+def invert_dict(d: dict) -> dict:
+    """Return inverted dict"""
+    return {value: key for key, value in d.items()}
+
+
+def update_status_str_to_int(apps, schema_editor):
+    Invoice = apps.get_model('services', 'Invoice')
+    whens = [When(status=status_str, then=Value(status_int)) for status_str, status_int in MAPPING_STATUSES.items()]
+    Invoice.objects.update(status_int=Case(*whens))
+
+
+def update_status_int_to_str(apps, schema_editor):
+    Invoice = apps.get_model('services', 'Invoice')
+    status_dict = invert_dict(MAPPING_STATUSES)
+    whens = [When(status_int=status_int, then=Value(status_str)) for status_int, status_str in status_dict.items()]
+    Invoice.objects.update(status=Case(*whens))
+
 
 class Migration(migrations.Migration):
 
@@ -11,11 +37,22 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.AddField(
             model_name='invoice',
-            name='status',
+            name='status_int',
             field=models.PositiveSmallIntegerField(choices=[(0, 'Оплачен'), (1, 'Ожидает оплаты'), (2, 'Отменен')], default=1, verbose_name='status'),
         ),
+        migrations.RunPython(update_status_str_to_int, update_status_int_to_str),
+        migrations.RemoveField(
+            model_name='invoice',
+            name='status',
+        ),
+        migrations.RenameField(
+            model_name='invoice',
+            old_name='status_int',
+            new_name='status',
+        ),
+
         migrations.AlterField(
             model_name='rent',
             name='date_to',
