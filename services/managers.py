@@ -6,7 +6,8 @@ from django.db.models.functions import ExtractDay
 class InvoiceManager(models.Manager):
 
     def get_queryset(self):
-        qs = super(InvoiceManager, self).get_queryset()
+        qs = super(InvoiceManager, self).get_queryset().\
+            select_related('user_id').prefetch_related('rent_set', 'purchase_set')
         return qs
 
 
