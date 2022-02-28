@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-01 09:28+0300\n"
+"POT-Creation-Date: 2022-02-28 10:08+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: shop_edu/settings.py:129
+#: shop_edu/settings.py:136
 msgid "Russian"
 msgstr ""
 
-#: shop_edu/settings.py:130
+#: shop_edu/settings.py:137
 msgid "English"
 msgstr ""
 
