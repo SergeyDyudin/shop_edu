@@ -174,7 +174,7 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         logger.info(f'User {request.user} is logout')
-        return HttpResponseRedirect(reverse('books:home'))
+        return HttpResponseRedirect(reverse('items:home'))
 
 
 class RegistrationView(View):
@@ -239,6 +239,6 @@ def activate_user(request, uidb64, token):
         user.save()
         logger.info(f'Activate user {user}')
         login(request, user)
-        return redirect('books:home')
+        return redirect('items:home')
     else:
         return render(request, 'accounts/account_activation_invalid.html')

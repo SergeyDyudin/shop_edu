@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import CustomUser
-from books.models import Item
+from items.models import Item
 from services.managers import InvoiceManager, RentManager, ServiceManager
 from shop_edu import settings
 

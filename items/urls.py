@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from . import views
 
-app_name = 'books'
+app_name = 'items'
 
 urlpatterns = [
     path('', views.ItemsListView.as_view(), name='home'),

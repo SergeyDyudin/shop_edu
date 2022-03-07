@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from books.managers import AdultFilteredItems, AdultFilteredCategory
+from items.managers import AdultFilteredItems, AdultFilteredCategory
 from utils.utils import transliterate_string
 
 
@@ -94,7 +94,7 @@ class Item(models.Model):
 
     objects = AdultFilteredItems()
 
-    path_template = 'books/detail/item.html'
+    path_template = 'items/detail/item.html'
 
     class Meta:
         verbose_name = _('Item')
@@ -108,7 +108,7 @@ class Item(models.Model):
         super(Item, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('books:item', kwargs={'slug': self.slug})
+        return reverse('items:item', kwargs={'slug': self.slug})
 
     @property
     def path_template_ext(self):
@@ -130,7 +130,7 @@ class Book(Item):
     publisher = models.ForeignKey(to=Publisher, on_delete=models.CASCADE, verbose_name=_('publisher'))
     year = models.DateField(verbose_name=_('year'))
 
-    path_template = 'books/detail/book.html'
+    path_template = 'items/detail/book.html'
 
     class Meta:
         verbose_name = _('Book')
@@ -146,7 +146,7 @@ class Magazine(Item):
     number = models.PositiveSmallIntegerField(_('magazine number'), blank=True, null=True)
     language = models.ForeignKey(to=Language, on_delete=models.CASCADE, verbose_name=_('language'))
 
-    path_template = 'books/detail/magazine.html'
+    path_template = 'items/detail/magazine.html'
 
     class Meta:
         verbose_name = _('magazine')
@@ -161,7 +161,7 @@ class Figure(Item):
     brand = models.ForeignKey(to=Brand, on_delete=models.CASCADE)
     model_name = models.CharField(_('Название модели'), max_length=80, blank=True)
 
-    path_template = 'books/detail/figure.html'
+    path_template = 'items/detail/figure.html'
 
     class Meta:
         verbose_name = _('figure')

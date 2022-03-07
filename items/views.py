@@ -85,7 +85,7 @@ class CategoryListView(ListView):
 
 class TypeListView(ListView):
     model = Item
-    template_name = 'books/item_list.html'
+    template_name = 'items/item_list.html'
 
     MAPPING_TYPE_MODEL = {
         'Книги': Book,

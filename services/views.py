@@ -18,7 +18,7 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse, reverse_lazy
 
 from accounts.models import CustomUser
-from books.models import Item
+from items.models import Item
 from services.forms import RentForm
 from services.models import Rent, Purchase, Invoice, Service
 
@@ -36,7 +36,7 @@ class PurchaseView(LoginRequiredMixin, SuccessMessageMixin, View):
     login_url = reverse_lazy('accounts:login')
 
     def get(self, request, **kwargs):
-        return redirect('books:item', Item.objects.get(pk=kwargs['pk']).slug)
+        return redirect('items:item', Item.objects.get(pk=kwargs['pk']).slug)
 
     @transaction.atomic
     def post(self, request, **kwargs):
@@ -168,7 +168,7 @@ class CartView(LoginRequiredMixin, View):
         messages.info(request, _('Заказ оплачен'))
         logger.info(f'Invoice {invoice} paid.')
         self.email_payment_done(request, invoice)
-        return redirect('books:home')
+        return redirect('items:home')
 
     def email_payment_done(self, request, invoice):
         current_site = get_current_site(request)

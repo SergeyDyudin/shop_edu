@@ -5,7 +5,7 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block branding %}
-    <h1 id="site-name"><a href="{% url 'books:home' %}">{{ site_header|default:_('Book store') }}</a></h1>
+    <h1 id="site-name"><a href="{% url 'items:home' %}">{{ site_header|default:_('Book store') }}</a></h1>
 {% endblock %}
 
 {% block content_title %}{% endblock %}
@@ -41,7 +41,7 @@
             {% endif %}
             <form>
                 <br><br>
-                <p><input type="search" name="search_item" formaction="{% url 'books:home' %}" placeholder={% translate "Search" %}></p>
+                <p><input type="search" name="search_item" formaction="{% url 'items:home' %}" placeholder={% translate "Search" %}></p>
             </form>
         </section>
     </div>

@@ -49,8 +49,8 @@ INSTALLED_APPS = [
 
     "debug_toolbar",
 
-    'accounts',
-    'books',
+    'accounts.apps.AccountsConfig',
+    'items.apps.ItemsConfig',
     'services.apps.ServicesConfig',
 ]
 
@@ -228,7 +228,7 @@ LOGGING = {
             'level': 'DEBUG',
             'handlers': ['console', 'file', 'mail_admins'],
         },
-        'books': {
+        'items': {
             'level': 'DEBUG',
             'handlers': ['console', 'file', 'mail_admins'],
         },

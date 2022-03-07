@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('accounts', '0001_initial'),
-        ('books', '0001_initial'),
+        ('items', '0001_initial'),
     ]
 
     operations = [
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ('date_to', models.DateField(verbose_name='Date to')),
                 ('daily_payment', models.PositiveSmallIntegerField(default=50, help_text='Daily payment', verbose_name='daily payment')),
                 ('invoice', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='services.invoice', verbose_name='invoice')),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='books.item', verbose_name='item')),
+                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='items.item', verbose_name='item')),
             ],
             options={
                 'verbose_name': 'rent',
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.PositiveSmallIntegerField(default=1, verbose_name='quantity')),
                 ('invoice', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='services.invoice', verbose_name='invoice')),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='books.item', verbose_name='item')),
+                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='items.item', verbose_name='item')),
             ],
             options={
                 'verbose_name': 'purchase',

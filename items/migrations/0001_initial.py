@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
                 ('price', models.PositiveIntegerField(verbose_name='price')),
                 ('photo', models.ImageField(blank=True, null=True, upload_to='items/photo/', verbose_name='photo')),
                 ('slug', models.SlugField(unique=True, verbose_name='URL')),
-                ('category', models.ManyToManyField(blank=True, to='books.Category')),
+                ('category', models.ManyToManyField(blank=True, to='items.Category')),
             ],
             options={
                 'verbose_name': 'Item',
@@ -106,45 +106,45 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Magazine',
             fields=[
-                ('item_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='books.item')),
+                ('item_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='items.item')),
                 ('date', models.DateField(default=django.utils.timezone.now, verbose_name='date')),
                 ('number', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='magazine number')),
-                ('language', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='books.language', verbose_name='language')),
+                ('language', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='items.language', verbose_name='language')),
             ],
             options={
                 'verbose_name': 'magazine',
                 'verbose_name_plural': 'magazines',
             },
-            bases=('books.item',),
+            bases=('items.item',),
         ),
         migrations.CreateModel(
             name='Figure',
             fields=[
-                ('item_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='books.item')),
+                ('item_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='items.item')),
                 ('character', models.CharField(blank=True, max_length=80)),
                 ('model_name', models.CharField(blank=True, max_length=80)),
-                ('brand', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='books.brand')),
+                ('brand', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='items.brand')),
             ],
             options={
                 'verbose_name': 'figure',
                 'verbose_name_plural': 'figures',
             },
-            bases=('books.item',),
+            bases=('items.item',),
         ),
         migrations.CreateModel(
             name='Book',
             fields=[
-                ('item_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='books.item')),
+                ('item_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='items.item')),
                 ('year', models.DateField(verbose_name='year')),
-                ('author', models.ManyToManyField(to='books.Author')),
-                ('genre', models.ManyToManyField(to='books.Genre')),
-                ('language', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='books.language', verbose_name='language')),
-                ('publisher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='books.publisher', verbose_name='publisher')),
+                ('author', models.ManyToManyField(to='items.Author')),
+                ('genre', models.ManyToManyField(to='items.Genre')),
+                ('language', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='items.language', verbose_name='language')),
+                ('publisher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='items.publisher', verbose_name='publisher')),
             ],
             options={
                 'verbose_name': 'Book',
                 'verbose_name_plural': 'Books',
             },
-            bases=('books.item',),
+            bases=('items.item',),
         ),
     ]

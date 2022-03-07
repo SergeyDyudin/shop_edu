@@ -3,7 +3,7 @@
 {% if types %}
     <ul class="nav nav-sidebar">
     {% for type in types %}
-        <li><a href="{% url 'books:type' type %}">{{ type }}</a></li>
+        <li><a href="{% url 'items:type' type %}">{{ type }}</a></li>
     {% endfor %}
 
 {% else %}

@@ -18,7 +18,7 @@
         <p>{% translate 'Цена' %} - {{ item.price }}</p>
         <p>{% translate 'Категории' %}:
             {% for category in item.category.all %}
-                <a href="{% url 'books:category' category %}">{{ category }}</a>
+                <a href="{% url 'items:category' category %}">{{ category }}</a>
             {% endfor %}</p>
         <a href="{{ item.get_absolute_url }}">{% translate 'Подробнее' %}</a><br><br>
     {% empty %}

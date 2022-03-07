@@ -1,6 +1,6 @@
 from django import forms
 
-from books.models import Item
+from items.models import Item
 from services.models import Rent
 
 

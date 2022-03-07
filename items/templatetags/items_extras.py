@@ -1,16 +1,16 @@
 from django import template
 
-from books.models import Category
+from items.models import Category
 
 
 register = template.Library()
 
 
-@register.inclusion_tag('books/categories.html')
+@register.inclusion_tag('items/categories.html')
 def list_category(user):
     return {'cats': Category.objects.adult_control(user).all()}
 
 
-@register.inclusion_tag('books/types.html')
+@register.inclusion_tag('items/types.html')
 def list_type():
     return {'types': ['Все товары', 'Книги', 'Журналы', 'Фигурки']}
